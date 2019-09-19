@@ -1,6 +1,5 @@
-import Supervisor.Spec
 
-defmodule Vampirenumbers.Supervisor do
+defmodule Gossipclasses.Supervisor do
 	use DynamicSupervisor
 
 	require Logger
@@ -26,6 +25,6 @@ This is the Supervisor for the Vampire Numbers project
 		end
 
 		def start_worker do
-			# Code to start the actors goes here 
+			# Code to start the actors goes here
 		end
 end

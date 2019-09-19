@@ -2,13 +2,13 @@ defmodule Gossipclasses.NodePushSum do
 	use GenServer
 
 	def start_link() do
-		GenServer.start_link(__MODULE__, %{s:0, w:0})
+		GenServer.start_link(__MODULE__, [])
 	end
 
 	def init(state) do
-		{:ok, state}
+		{:ok, %{s: 0, w: 0}}
 	end
-	
+
 	def receive_message(pid, s, w) do
 		GenServer.cast(pid, {:receive_message, s , w} )
 	end
@@ -18,6 +18,6 @@ defmodule Gossipclasses.NodePushSum do
 		# process it
 		# Change self state
 		# pass on the message to random neighbour
-
+		sup_children = Supervisor.which_children(Vampirenumbers.Supervisor)
 	end
 end
