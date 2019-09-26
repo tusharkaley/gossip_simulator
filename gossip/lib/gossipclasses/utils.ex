@@ -8,7 +8,7 @@ defmodule Gossipclasses.Utils do
 
 		target_pid = Enum.each(sup_children, fn(child) ->
 				pid = elem(child, 1)
-				target_p = if (caller_pid!=pid) do
+				target_p = if (caller_pid != pid) do
 							pid
 						end
 				target_p
