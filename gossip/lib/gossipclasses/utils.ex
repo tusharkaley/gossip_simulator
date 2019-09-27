@@ -33,9 +33,13 @@ defmodule Gossipclasses.Utils do
 		# TODO: Maybe we should just start the worker with ID 1 because in any topology it should
 		# trigger the rumour spreading
 		test = :ets.lookup(:start_child, "start_child_pid")
-		IO.inspect(test)
-		# cond do
-		# 	algorithm == "gossip" -> "Gossipclasses.NodeGossip"
-		# end
+		[head | tail] = test
+
+		starter_pid = elem(head, 1)
+		IO.inspect(starter_pid)
+		message = "Bismil ka sandesh hai, 27 ko Lucknow se Lahore jaane waali train, jisme angrezon ka paisa jaata hai, usse hum Kakori mein lootenge... Aur phir unn paison se hathiyar khareedenge."
+		cond do
+			algorithm == "gossip" -> Gossipclasses.NodeGossip.receive_message(starter_pid, message)
+		end
 	end
 end
