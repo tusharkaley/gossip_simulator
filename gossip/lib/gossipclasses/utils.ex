@@ -20,16 +20,17 @@ defmodule Gossipclasses.Utils do
 	@doc """
 		Function to get the child Spec for the workers
 	"""
-	def get_child_spec(child_class, id) do
-
-    	child_spec = %{
-			            :id => id,
-			            :start => {child_class, :start_link, []},
-						:restart => :transient,
-						:type => :worker
-        }
-        # %{:id => id, :start => {child_class, :start_link, []}, :restart => :transient,:type => :worker}
-		child_spec
+	def add_children(num_nodes) do
+		Enum.each(1..num_nodes, fn(x) ->
+			# {:ok, child} = DynamicSupervisor.start_child(Gossipclasses.Supervisor, Gossipclasses.Utils.get_child_spec(Gossipclasses.NodeGossip, x))
+			{:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {Gossipclasses.NodeGossip, :start_link, []}, :restart => :transient,:type => :worker})
+			  IO.inspect(child)
+			  if (x == 1) do
+				Gossipclasses.Utils.set_start_child(child)
+			  end
+			end
+		  )
+		  Supervisor.start_child(Gossipclasses.Supervisor, %{:id => :tracker, :start => {Gossipclasses.NodeTracker, :start_link, [self(), num_nodes]}, :restart => :transient,:type => :worker})
 
 	end
 
@@ -38,7 +39,7 @@ defmodule Gossipclasses.Utils do
 		:ets.insert(:start_child, {"start_child_pid", pid})
 	end
 
-	def get_set_go(algorithm, s \\ 0, w \\ 0) do
+	def spread_rumour(algorithm, s \\ 0, w \\ 0) do
 		# TODO: Maybe we should just start the worker with ID 1 because in any topology it should
 		# trigger the rumour spreading
 
