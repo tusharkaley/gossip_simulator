@@ -148,30 +148,78 @@ def threeDtorus(num_workers) do
 end
 
 
-def honeycomb(num_workers) do
+def honeycomb(num_workers) do                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
     #IN PROGRESS
     range = 1..num_workers
-    # unless do
-    #     num_workers<6 -> line(num_workers)
-    # else
-    #     map = Enum.reduce range, %{}, fn x, acc ->
-    #         neighborsList=
-    #         cond do 
-    #             #x values.
-    #         end
-    #         Map.put(acc, x, neighborsList)
-    #     end
-    #     end
-       
-    # end
-     
+    cond do
+        num_workers < 6 -> line(num_workers)
+        num_workers ==6 -> circle(num_workers)
+        num_workers >18 -> 
+            q = div num_workers,6
+            r = rem num_workers,6
+            if rem(q,2) ==0 do
+                q = q-1
+                r = r+6
+                map = addR(q, r, createHeaxgons(q*6,r))
+            else
+               map = addR(q, r,createHeaxgons(q*6,r))
+            end
+    end
+end
 
+#This method will create stacks of honeycombs with n as odd multiple of 6
+
+def createHeaxgons(n,r) do
+    map = Enum.reduce 1..n, %{}, fn x, acc ->
+        neighbors = cond do
+            x==1 or x==3 or x==5 -> [x+1,x+6]
+            x==2 or x==4 -> [x-1,x+6]
+            x==n or x== n-2 or x==n-4 -> [x-1,x-6]
+            x==n-1 or x==n-3 or x==n-5 -> [x+1, x-6]
+            rem(x,12) ==0 -> [x+6,x-6]
+            rem(x,6) ==0 -> [x-1,x+6,x-6]
+            rem(x,12) ==1 or  rem(x,12) ==3 or rem(x,12) ==5 -> [x+1,x+6,x-6]
+            rem(x,12) ==2 or  rem(x,12) ==4 -> [x-1,x+6,x-6]
+            rem(x,6) ==1 -> [x+6,x-6]
+            rem(x,6) ==5 or  rem(x,6) ==3 -> [x-1,x+6,x-6]
+            rem(x,6) ==2 or  rem(x,6) ==4 -> [x+1,x+6,x-6]
+        end
+        Map.put(acc, x, neighbors)
+    end
+
+end
+
+def addR(q,r,map) do
     
+ends = 1..r
+num = q*r
+Enum.each ends fn(x) -> 
+    cond do
+        x==1 -> 
+        list = Map.get ends,1
+        list = list ++ []
+        Map.replace ends x list
+    end
+    
+
+end
+    
+end
+
+def addToList()
+
+def circle(workers) do
+    map = line(workers)
+    list = [2,workers]
+    map = Map.replace! map, 1, list
+    list = [workers-1,1]
+    map = Map.replace! map, workers, list
 end
 
 def randHoneyComb do
     #IN PROGRESS
     
 end
+
 
 end
