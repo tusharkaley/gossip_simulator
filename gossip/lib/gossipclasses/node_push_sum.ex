@@ -2,11 +2,12 @@ defmodule Gossipclasses.NodePushSum do
 	use GenServer
 	require Logger
 
-	def start_link() do
-		GenServer.start_link(__MODULE__, [])
+	def start_link(index) do
+		GenServer.start_link(__MODULE__, [index])
 	end
 
-	def init(i) do
+	def init(index) do
+		{:ok,i} = Enum.fetch index,0
 		node_state = %{"s" =>i , "w" => 1, "ratioChange" => 0, "neighbours" => []}
 		{:ok, node_state}
 	end

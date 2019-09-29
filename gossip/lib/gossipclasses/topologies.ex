@@ -1,6 +1,6 @@
 defmodule Gossipclasses.Topologies do
 
-# get the number of workers,and then create adjacency matrix.
+# get the number of workers,and then create adjacency list for all the nodes.
 #this can be done by a boss worker
 
 def line(num_workers) do
@@ -74,12 +74,11 @@ def threeDtorus(num_workers) do
     rowsCube = Kernel.trunc(:math.pow(rows, 3))
     num_workers = rowsCube
     range = 1..num_workers
-    IO.puts "#{rows} , #{rowsSqrd} , #{rowsCube}"
+    # IO.puts "#{rows} , #{rowsSqrd} , #{rowsCube}"
     map = Enum.reduce range, %{}, fn x, acc ->
         neighborsList=
         cond do
             #4 corners of the torus- 1,4, 13, 16, 49, 52, 61, 64
-            # x<40 -> []
             x==1 -> [x+1, x+rows-1, x+rows, x+rowsSqrd-rows, x+rowsSqrd, x+rowsCube-rowsSqrd]
             x==rows -> [x-1, 1, x+rows, rowsSqrd, x+rowsSqrd, x+rowsCube-rowsSqrd]
             x==rowsSqrd-rows+1 -> [x+1, rowsSqrd, x-rows, 1,x+rowsSqrd, rowsCube-rows+1]
@@ -152,8 +151,7 @@ def honeycomb(num_workers) do
     range = 1..num_workers
     cond do
         num_workers < 6 -> line(num_workers)
-        num_workers ==6 -> circle(num_workers)
-        #NEED to write 7 to 18 num_workers case
+        num_workers >5 and num_workers <19 -> circle(num_workers)
         num_workers >18 -> 
             q = div num_workers,6
             r = rem num_workers,6
@@ -168,7 +166,6 @@ def honeycomb(num_workers) do
 end
 
 #This method will create stacks of honeycombs with n as odd multiple of 6
-
 def createHeaxgons(n,r) do
     map = Enum.reduce 1..n, %{}, fn x, acc ->
         neighbors = cond do
@@ -190,6 +187,7 @@ def createHeaxgons(n,r) do
 
 end
 
+#add the ends of a honeycomb
 def addR(q,r,map) do
 n = q*6
 ends = 1..r
@@ -204,6 +202,7 @@ map_r = Enum.reduce ends,map, fn x, acc ->
 
 end
 
+#one hexagon
 def circle(workers) do
     map = line(workers)
     list = [2,workers]

@@ -20,16 +20,30 @@ defmodule Gossipclasses.Utils do
 	@doc """
 		Function to get the child Spec for the workers
 	"""
-	def add_children(child_class, num_nodes) do
-		Enum.each(1..num_nodes, fn(x) ->
-			# {:ok, child} = DynamicSupervisor.start_child(Gossipclasses.Supervisor, Gossipclasses.Utils.get_child_spec(Gossipclasses.NodeGossip, x))
-			{:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {child_class, :start_link, []}, :restart => :transient,:type => :worker})
-			  IO.inspect(child)
-			  if (x == 1) do
-				  Gossipclasses.Utils.set_start_child(child)
-			  end
-			end
-		  )
+	def add_children(child_class, num_nodes,algorithm) do
+		if algorithm == "gossip" do
+			Enum.each(1..num_nodes, fn(x) ->
+				# {:ok, child} = DynamicSupervisor.start_child(Gossipclasses.Supervisor, Gossipclasses.Utils.get_child_spec(Gossipclasses.NodeGossip, x))
+				{:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {child_class, :start_link, []}, :restart => :transient,:type => :worker})
+				  IO.inspect(child)
+				  if (x == 1) do
+					  Gossipclasses.Utils.set_start_child(child)
+				  end
+				end
+			  )
+		else
+			Enum.each(1..num_nodes, fn(x) ->
+				# {:ok, child} = DynamicSupervisor.start_child(Gossipclasses.Supervisor, Gossipclasses.Utils.get_child_spec(Gossipclasses.NodeGossip, x))
+				{:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {child_class, :start_link, [x]}, :restart => :transient,:type => :worker})
+				  IO.inspect(child)
+				  if (x == 1) do
+					  Gossipclasses.Utils.set_start_child(child)
+				  end
+				end
+			  )
+
+		end
+		
 		  Supervisor.start_child(Gossipclasses.Supervisor, %{:id => :tracker, :start => {Gossipclasses.NodeTracker, :start_link, [self(), num_nodes]}, :restart => :transient,:type => :worker})
 
 	end
