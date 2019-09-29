@@ -28,7 +28,7 @@ end
 
 
 def random2D(num_workers) do
-    div = num_workers |> :math.sqrt |> round
+    div = num_workers |> :math.sqrt |> ceil
     num_workers = div*div
     range = 1..num_workers
     grid = Enum.reduce range, %{}, fn x, acc ->
@@ -55,22 +55,23 @@ def random2D(num_workers) do
     end
 end
 
+@spec closeEnough(any, any) :: boolean
 def closeEnough(pos1,pos2) do
     x = :math.pow((Enum.at(pos1, 0) - Enum.at(pos2, 0)) ,2)
     y = :math.pow((Enum.at(pos1, 1) - Enum.at(pos2, 1)) ,2)
     dist = x+y |> :math.sqrt
     IO.puts "dist = #{dist}"
     cond do
-        dist>=0.1 -> false
-        dist<0.1 -> true
+        dist>=0.4 -> false
+        dist<0.4 -> true
     end
 
 end
 
 def threeDtorus(num_workers) do
-    rows =round(:math.pow(num_workers,1/3))
-    rowsSqrd = rows*rows
-    rowsCube = rowsSqrd*rows
+    rows =ceil(:math.pow(num_workers,1/3))
+    rowsSqrd = Kernel.trunc(:math.pow(rows, 2))
+    rowsCube = Kernel.trunc(:math.pow(rows, 3))
     num_workers = rowsCube
     range = 1..num_workers
     IO.puts "#{rows} , #{rowsSqrd} , #{rowsCube}"
