@@ -20,13 +20,13 @@ defmodule Gossipclasses.Utils do
 	@doc """
 		Function to get the child Spec for the workers
 	"""
-	def add_children(num_nodes) do
+	def add_children(child_class, num_nodes) do
 		Enum.each(1..num_nodes, fn(x) ->
 			# {:ok, child} = DynamicSupervisor.start_child(Gossipclasses.Supervisor, Gossipclasses.Utils.get_child_spec(Gossipclasses.NodeGossip, x))
-			{:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {Gossipclasses.NodeGossip, :start_link, []}, :restart => :transient,:type => :worker})
+			{:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {child_class, :start_link, []}, :restart => :transient,:type => :worker})
 			  IO.inspect(child)
 			  if (x == 1) do
-				Gossipclasses.Utils.set_start_child(child)
+				  Gossipclasses.Utils.set_start_child(child)
 			  end
 			end
 		  )
@@ -39,7 +39,7 @@ defmodule Gossipclasses.Utils do
 		:ets.insert(:start_child, {"start_child_pid", pid})
 	end
 
-	def spread_rumour(algorithm, s \\ 0, w \\ 0) do
+	def spread_rumour(algorithm, message \\ nil, s \\ 0, w \\ 0) do
 		# TODO: Maybe we should just start the worker with ID 1 because in any topology it should
 		# trigger the rumour spreading
 
@@ -47,7 +47,7 @@ defmodule Gossipclasses.Utils do
 		[head| _tail] = tup
 		starter_pid = elem(head, 1)
 		IO.inspect(starter_pid)
-		message = "Bismil ka sandesh hai, 27 ko Lucknow se Lahore jaane waali train, jisme angrezon ka paisa jaata hai, usse hum Kakori mein lootenge... Aur phir unn paison se hathiyar khareedenge."
+
 		Logger.debug("Inside getsetgo")
 		cond do
 			algorithm == "gossip" -> Gossipclasses.NodeGossip.start_rumour(starter_pid, message)
@@ -58,20 +58,25 @@ defmodule Gossipclasses.Utils do
 @doc """
 Function to set all the neighbours of
 """
-  def set_all_neighbours(adj_list) do
+  def set_all_neighbours(algorithm, adj_list) do
 
-	sup_children = Supervisor.which_children(Gossipclasses.Supervisor)
+    # Building the id -> PID map
+	  sup_children = Supervisor.which_children(Gossipclasses.Supervisor)
     id_pid = Enum.reduce sup_children, %{}, fn x, acc ->
-		id = elem(x,0)
-		pid = elem(x,1)
-		Map.put(acc, id, pid)
+      id = elem(x,0)
+      pid = elem(x,1)
+      Map.put(acc, id, pid)
     end
     # map
 	# test = Enum.map([1,2,4], fn(x) -> Map.get(id_pid, x) end)
 	Enum.each  adj_list,  fn {key, val} ->
 			neighbours = Enum.map(val, fn(x) -> Map.get(id_pid, x) end)
 			# IO.inspect(test)
-			Gossipclasses.NodeGossip.update_neighbours(Map.get(id_pid, key), neighbours)
+      cond do
+        algorithm == "gossip" -> Gossipclasses.NodeGossip.update_neighbours(Map.get(id_pid, key), neighbours)
+        algorithm == "push_sum" -> Gossipclasses.NodeGossip.update_neighbours(Map.get(id_pid, key), neighbours)
+      end
+
 			# IO.puts "#{k} --> #{v}"
 	end
 	IO.inspect(id_pid)
@@ -82,5 +87,27 @@ Function to set all the neighbours of
 		time_now = Time.utc_now()
 		time_diff = Time.diff(time_now, start_time, :millisecond)
 		Logger.debug("The time difference is #{time_diff}")
-	end
+  end
+
+  def updated_num(topology, num_nodes)  do
+
+    num_nodes_temp = if topology == "3dtorus" do
+      rows = :math.pow(num_nodes,1/3) |> ceil
+      Kernel.trunc(:math.pow(rows, 3))
+    else
+      temp = num_nodes |> :math.sqrt |> ceil
+      Kernel.trunc(:math.pow(temp, 2))
+    end
+    num_nodes_temp
+  end
+  def update_num_nodes(topology, num_nodes) do
+    num_nodes = cond do
+      topology == "3dtorus" -> Gossipclasses.Utils.updated_num(topology, num_nodes)
+      topology == "2dgrid" -> Gossipclasses.Utils.updated_num(topology, num_nodes)
+      true -> num_nodes
+    end
+    IO.puts("Numnodes updates #{num_nodes}")
+    num_nodes
+
+  end
 end

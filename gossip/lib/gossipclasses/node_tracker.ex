@@ -71,9 +71,10 @@ defmodule Gossipclasses.NodeTracker do
 		num_nodes = Map.get(node_store, "num_nodes")
 		done_percentage = (done_count/num_nodes) * 100
 
-		if done_percentage > 80.0 do
-			Logger.log(:warn, "Done %age > 85" )
+		if done_percentage > 90.0 do
+			Logger.log(:warn, "Done %age > 80" )
 			terminate_addr = Map.get(node_store, "script_pid")
+
 			send(terminate_addr, {:terminate_now, self()})
 		end
 		Logger.log(:debug, "PID: #{inspect sender} node state: #{inspect node_store}" )
