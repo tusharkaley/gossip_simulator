@@ -38,25 +38,25 @@ defmodule Gossipclasses.NodeTracker do
 	end
 
 	@impl true
-  def handle_cast({:update_state}, node_store) do
-    # TODO: possible fuck up here because inside the loop the node_store has local scode
-    # so this is doing nothing to the state
-    Logger.log(:debug, "PID: #{inspect self()} node state: #{inspect node_store}" )
-    # Get all the children of the supervisor
-	sup_children = Supervisor.which_children(Gossipclasses.Supervisor)
-		# For each child add an entry in the node_store state
-    node_store_temp = Enum.reduce sup_children, node_store, fn child, acc ->
+  	def handle_cast({:update_state}, node_store) do
+    	Logger.log(:debug, "PID: #{inspect self()} node state: #{inspect node_store}" )
 
+		# Get all the children of the supervisor
+		sup_children = Supervisor.which_children(Gossipclasses.Supervisor)
+
+		# For each child add an entry in the node_store state
+    	node_store_temp = Enum.reduce sup_children, node_store, fn child, acc ->
 				pid = elem(child, 1)
         		pid_str = inspect pid
           		Map.put(acc, pid_str, false)
-      end
-      # IO.inspect(node_store_temp)
-      node_store_temp = Map.put(node_store_temp, "time_start", Map.get(node_store, "time_start"))
-      node_store_temp = Map.put(node_store_temp, "done_count", Map.get(node_store, "done_count"))
-      node_store = node_store_temp
-    # IO.inspect(node_store)
-    {:noreply, node_store}
+      	end
+
+    	node_store_temp = Map.put(node_store_temp, "time_start", Map.get(node_store, "time_start"))
+    	node_store_temp = Map.put(node_store_temp, "done_count", Map.get(node_store, "done_count"))
+		node_store = node_store_temp
+
+    	{:noreply, node_store}
+
 	end
 	@doc """
 	Server side function mark a worker as done
