@@ -21,7 +21,7 @@ defmodule Gossipclasses.NodeGossip do
 		Client side function to receive message
 	"""
 	def receive_message(pid, message) do
-		GenServer.cast(pid, {:receive_message, message})
+    GenServer.cast(pid, {:receive_message, message})
 
 	end
 
@@ -42,7 +42,7 @@ defmodule Gossipclasses.NodeGossip do
 		# add the terminating condition once the rumour
 		# has been heard n number of times
 		node_state= Map.put(node_state, "heard_count", node_state["heard_count"]+1)
-    	node_state = Map.put(node_state, "message", message)
+    node_state = Map.put(node_state, "message", message)
 		heard_count = Map.get(node_state, "heard_count")
 
 		# We flag this actor as done in the Node tracker once it hears the message <runmour_threshold> number of times
