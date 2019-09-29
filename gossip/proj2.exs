@@ -12,34 +12,49 @@ try do
 	# based on the given algo figure out which algo to trigger
 	IO.puts("The number of children is #{inspect Supervisor.count_children(Gossipclasses.Supervisor)}")
 	# Call to helper function to add the given number of workers to the Dynamic Supervisor
+
 	Enum.each(1..num_nodes, fn(x) ->
-		{:ok, child} = DynamicSupervisor.start_child(Gossipclasses.Supervisor, Gossipclasses.Utils.get_child_spec(Gossipclasses.NodeGossip, x))
-		IO.inspect(child)
-		if (x == 1) do
-			Gossipclasses.Utils.set_start_child(child)
+		# {:ok, child} = DynamicSupervisor.start_child(Gossipclasses.Supervisor, Gossipclasses.Utils.get_child_spec(Gossipclasses.NodeGossip, x))
+		{:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {Gossipclasses.NodeGossip, :start_link, []}, :restart => :transient,:type => :worker})
+			IO.inspect(child)
+			if (x == 1) do
+				Gossipclasses.Utils.set_start_child(child)
+			end
 		end
-	end
 	)
+  	Supervisor.start_child(Gossipclasses.Supervisor, %{:id => :tracker, :start => {Gossipclasses.NodeTracker, :start_link, [self(), num_nodes]}, :restart => :transient,:type => :worker})
+
 	# Build topologies here
 	# TODO: figure out if we want to get a map in return and post process it to set neighbours of the actors
 	# or do it directly from the call to the topology function
 
-	adj_matrix = cond do
-					topology == "line" -> "call to Gossipclasses.Topologies.line()"
-					topology == "full" -> "Gossipclasses.Topologies.full()"
-					topology == "3dtorus" -> "Gossipclasses.Topologies.3dtorus()"
-					topology == "2dgrid" -> "Gossipclasses.Topologies.2dgrid()"
-					topology == "honeycomb" -> "Gossipclasses.Topologies.honeycomb()"
-					topology == "honeycombRandom" -> "Gossipclasses.Topologies.honeycombRandom()"
-
+	adj_list = cond do
+					topology == "line" -> Gossipclasses.Topologies.line(num_nodes)
+					topology == "full" -> Gossipclasses.Topologies.fullNetwork(num_nodes)
+					topology == "3dtorus" -> Gossipclasses.Topologies.threeDtorus(num_nodes)
+					topology == "2dgrid" -> Gossipclasses.Topologies.random2D(num_nodes)
+					topology == "honeycomb" -> Gossipclasses.Topologies.honeycomb(num_nodes)
+					topology == "honeycombRandom" -> Gossipclasses.Topologies.randHoneyComb(num_nodes)
 				end
+
+	IO.puts "Printing adj list"
+	IO.inspect(adj_list)
+    id_pid = Gossipclasses.Utils.set_all_neighbours(adj_list)
+    # IO.inspect(id_pid)
 	# Once the topology is in place we trigger the algorithm from here
+	# Maybe we'll have to call the set neighbours call for all the actors
+	#  assuming we have an adjacency list in place
+	Gossipclasses.NodeTracker.add_all_to_state()
 	Gossipclasses.Utils.get_set_go(algorithm)
+    # # Process.sleep(3000)
 
-	IO.puts("The number of children is #{inspect Supervisor.count_children(Gossipclasses.Supervisor)}")
-
+	# IO.puts("Reached the end The number of children is #{inspect Supervisor.count_children(Gossipclasses.Supervisor)}")
+	# IO.puts("My PID #{inspect self()}")
+	receive do
+		{:terminate_now, pid} -> Gossipclasses.Utils.log_time()
+	end
 
 rescue
-	_e in ArgumentError ->  IO.puts "Invalid arguments! Expecting 2 integers with first argument less than the second"
+	e in ArgumentError ->  e
 	System.stop(1)
 end
