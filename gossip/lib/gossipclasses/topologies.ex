@@ -170,7 +170,7 @@ def honeycomb(num_workers) do
 
 end
 
-def randHoneyComb do
+def randHoneyComb(num_workers) do
     #IN PROGRESS
 
 end

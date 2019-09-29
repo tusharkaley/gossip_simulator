@@ -1,3 +1,6 @@
+
+# THIS FILE WON'T BE USED  NOW SINCE WE HAVE THE EXECUTABLE IN PLACE
+
 try do
 	# Check if we have correct arguments
 	if length(System.argv) != 3 do

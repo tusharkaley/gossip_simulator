@@ -3,11 +3,15 @@ defmodule Gossip.MixProject do
 
   def project do
     [
-      app: :gossip,
+      app: :proj2,
       version: "0.1.0",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      escript: [
+        main_module: Proj2.CLI,
+        comment: "Create an executable"
+      ]
     ]
   end
 
