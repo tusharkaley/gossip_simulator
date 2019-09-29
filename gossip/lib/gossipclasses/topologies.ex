@@ -13,7 +13,7 @@ def line(num_workers) do
         end
         Map.put(acc, x, neighbors)
       end
-    IO.inspect map
+    map
 end
 
 def fullNetwork(num_workers) do
@@ -23,6 +23,7 @@ def fullNetwork(num_workers) do
         neighbors = List.delete neighbors,x
         Map.put(acc, x, neighbors)
     end
+    map
 end
 
 
@@ -62,8 +63,8 @@ def closeEnough(pos1,pos2) do
     cond do
         dist>=0.1 -> false
         dist<0.1 -> true
-    end  
-    
+    end
+
 end
 
 def threeDtorus(num_workers) do
@@ -95,7 +96,7 @@ def threeDtorus(num_workers) do
             rem(x,rows) ==1 and x<rowsSqrd-rows+1 -> [x+1, x+rows-1,x+rows, x-rows, x+rowsSqrd, x+rowsCube-rowsSqrd]
             #front right edge - 8,12
             rem(x,rows) == 0 and x>rows and x<rowsSqrd -> [x+rows, x-rows, x-1, x-rows+1, x+rowsSqrd, x+rowsCube-rowsSqrd]
-            
+
             #back top edge - 62, 63
             x> rowsCube-rows+1 and x< rowsCube -> [x+1, x-1, x-rows, x-rowsSqrd+rows, x-rowsSqrd, x-rowsCube+rowsSqrd]
 
@@ -129,16 +130,16 @@ def threeDtorus(num_workers) do
             #face 3 - 25,21,41,37
             rem(x-1, rows) ==0 -> [x+1, x+rows-1, x+rows, x-rows, x+rowsSqrd, x-rowsSqrd]
 
-            #face 4- 24,28,40,44 
+            #face 4- 24,28,40,44
             rem(x, rows) ==0 -> [x-1, x-rows+1, x+rows, x-rows, x+rowsSqrd, x-rowsSqrd]
 
             #face 5 - 30,31,46,47
             rem(x, rowsSqrd) > rowsSqrd-rows+1 -> [x+1, x-1, x-rows, x-rowsSqrd+rows, x+rowsSqrd, x-rowsSqrd]
-           
+
             #face 6 - 18,19,34,35
             rem(x, rowsSqrd) >1 and rem(x, rowsSqrd) <rows -> [x+1, x-1, x+rowsSqrd, x-rowsSqrd, x+rows, x+rowsSqrd-rows]
 
-            #rest 
+            #rest
             true -> [x+1, x-1, x+rows, x-rows, x+rowsSqrd, x-rowsSqrd]
 
         end
@@ -156,22 +157,22 @@ def honeycomb(num_workers) do
     # else
     #     map = Enum.reduce range, %{}, fn x, acc ->
     #         neighborsList=
-    #         cond do 
+    #         cond do
     #             #x values.
     #         end
     #         Map.put(acc, x, neighborsList)
     #     end
     #     end
-       
-    # end
-     
 
-    
+    # end
+
+
+
 end
 
 def randHoneyComb do
     #IN PROGRESS
-    
+
 end
 
 end

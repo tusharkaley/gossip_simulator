@@ -1,6 +1,7 @@
+import Supervisor.Spec
 
 defmodule Gossipclasses.Supervisor do
-	use DynamicSupervisor
+	use Supervisor
 
 	require Logger
 @moduledoc """
@@ -10,7 +11,7 @@ This is the Supervisor for the Vampire Numbers project
 		Client function which triggers the Supervisor start
 		"""
 		def start_link() do
-			DynamicSupervisor.start_link(__MODULE__, :ok, name: __MODULE__)
+			Supervisor.start_link(__MODULE__, :ok, name: __MODULE__)
 		end
 
 		def init(_nums_range) do
@@ -19,8 +20,8 @@ This is the Supervisor for the Vampire Numbers project
 			# children = [worker(Vampirenumbers.Boss, [], [id: :boss, restart: :transient, shutdown: :infinity]) | children]
 			# IO.inspect children
 			# loop(children_pids)
-			# supervise(children, strategy: :one_for_one)
-			DynamicSupervisor.init(strategy: :one_for_one)
+			supervise([], strategy: :one_for_one)
+			# Supervisor.init(strategy: :one_for_one)
 
 		end
 
