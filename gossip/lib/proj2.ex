@@ -7,8 +7,8 @@ defmodule Proj2.CLI do
 
   num_nodes = Kernel.trunc(Gossipclasses.Utils.update_num_nodes(topology, num_nodes))
   cond do
-    algorithm == "gossip" -> Gossipclasses.Utils.add_children(Gossipclasses.NodeGossip, num_nodes)
-    algorithm == "push_sum" -> Gossipclasses.Utils.add_children(Gossipclasses.NodePushSum, num_nodes)
+    algorithm == "gossip" -> Gossipclasses.Utils.add_children(Gossipclasses.NodeGossip, num_nodes,algorithm)
+    algorithm == "push-sum" -> Gossipclasses.Utils.add_children(Gossipclasses.NodePushSum, num_nodes,algorithm)
   end
 
   IO.puts ("Numnodes is #{num_nodes}")
@@ -16,10 +16,10 @@ defmodule Proj2.CLI do
     adj_list = cond do
       topology == "line" -> Gossipclasses.Topologies.line(num_nodes)
       topology == "full" -> Gossipclasses.Topologies.fullNetwork(num_nodes)
-      topology == "3dtorus" -> Gossipclasses.Topologies.threeDtorus(num_nodes)
+      topology == "3Dtorus" -> Gossipclasses.Topologies.threeDtorus(num_nodes)
       topology == "2dgrid" -> Gossipclasses.Topologies.random2D(num_nodes)
       topology == "honeycomb" -> Gossipclasses.Topologies.honeycomb(num_nodes)
-      topology == "honeycombRandom" -> Gossipclasses.Topologies.randHoneyComb(num_nodes)
+      topology == "randhoneycomb" -> Gossipclasses.Topologies.randHoneyComb(num_nodes)
     end
     # IO.puts "Printing adj list"
     IO.inspect(adj_list)
@@ -36,7 +36,7 @@ defmodule Proj2.CLI do
     w = 0
     cond do
       algorithm == "gossip" -> Gossipclasses.Utils.spread_rumour(algorithm, message)
-      algorithm == "push_sum" -> Gossipclasses.Utils.spread_rumour(algorithm, s, w)
+      algorithm == "push-sum" -> Gossipclasses.Utils.spread_rumour(algorithm, s, w)
     end
 
     # We wait on the Node_tracker to tell us to initiate shutdown

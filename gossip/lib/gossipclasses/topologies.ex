@@ -155,13 +155,21 @@ def honeycomb(num_workers) do
         num_workers >18 -> 
             q = div num_workers,6
             r = rem num_workers,6
-            if rem(q,2) ==0 do
-                q = q-1
-                r = r+6
-                addR(q, r, createHeaxgons(q*6,r))
-            else
-                addR(q, r,createHeaxgons(q*6,r))
+            cond do
+                r==0 -> createHeaxgons(q*6,r)
+                rem(q,2) ==0 -> 
+                    q = q-1
+                    r = r+6
+                    addR(q, r, createHeaxgons(q*6,r))
+                true-> addR(q, r, createHeaxgons(q*6,r))
             end
+            # if rem(q,2) ==0 do
+            #     q = q-1
+            #     r = r+6
+            #     addR(q, r, createHeaxgons(q*6,r))
+            # else
+            #     addR(q, r,createHeaxgons(q*6,r))
+            # end
     end
 end
 

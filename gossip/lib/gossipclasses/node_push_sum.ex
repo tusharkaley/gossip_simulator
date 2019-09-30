@@ -18,7 +18,7 @@ defmodule Gossipclasses.NodePushSum do
 	end
 	
 	def start_pushing(pid, message) do
-		GenServer.call(pid, {:start_pushin, message}, :infinity)
+		GenServer.call(pid, {:start_pushing, message}, :infinity)
 	end
 
 	def receive_message(pid, s, w) do
@@ -34,29 +34,38 @@ defmodule Gossipclasses.NodePushSum do
 		new_w = (w+ get_w)/2
 		new_ratio = new_s/new_w
 		diff = new_ratio - ratio
+		ratioChange= Map.get node_state,"ratioChange"
 
+		ratioChange =
+		cond do 
+		  (diff < :math.pow(10, -10) && ratioChange == 2) ->
+		  		Logger.log(:warn, "PID: #{inspect self()} node state: #{inspect node_state} RATIO REACHED" )
+		  		Gossipclasses.NodeTracker.mark_as_done(self())
+		  		ratioChange
+		  diff < :math.pow(10, -10)-> ratioChange + 1
+		  true -> 0
+		  end
+			neighbours = Map.get(node_state, "neighbours")
+			# Pick a random neighbour from the neighbour list
+			target = Enum.random(neighbours)
+			Logger.log(:debug, "PID: #{inspect self()} node state: #{inspect node_state} sending values to #{inspect target}" )
+			Gossipclasses.NodePushSum.receive_message(target, new_s, new_w)
+	
 		node_state= Map.put(node_state, "s", new_s)
 		node_state= Map.put(node_state, "w", new_w)
-
-		ratioChange=
-		if (abs(diff) < :math.pow(10, -10) ) do
-			Map.get(node_state,"ratioChange") +1
-		else
-			0
-		end
 		node_state= Map.put(node_state, "ratioChange", ratioChange)
 
-		if ratioChange == 3 do
-			#mark as done
-			Logger.log(:warn, "PID: #{inspect self()} node state: #{inspect node_state} RATIO REACHED" )
-			Gossipclasses.NodeTracker.mark_as_done(self())
-		end
-		neighbours = Map.get(node_state, "neighbours")
-		# Pick a random neighbour from the neighbour list
-		target = Enum.random(neighbours)
-		Logger.log(:debug, "PID: #{inspect self()} node state: #{inspect node_state} sending values to #{inspect target}" )
-		Gossipclasses.NodePushSum.receive_message(target, new_s,new_w)
-
+		# if ratioChange >2 do
+		# 	#mark as done
+		# 	Logger.log(:warn, "PID: #{inspect self()} node state: #{inspect node_state} RATIO REACHED" )
+		# 	Gossipclasses.NodeTracker.mark_as_done(self())
+		# else
+		# neighbours = Map.get(node_state, "neighbours")
+		# # Pick a random neighbour from the neighbour list
+		# target = Enum.random(neighbours)
+		# Logger.log(:debug, "PID: #{inspect self()} node state: #{inspect node_state} sending values to #{inspect target}" )
+		# Gossipclasses.NodePushSum.receive_message(target, new_s,new_w)
+		# end
 		# receive message
 		# process it
 		# Change self state

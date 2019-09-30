@@ -65,7 +65,7 @@ defmodule Gossipclasses.Utils do
 		Logger.debug("Inside getsetgo")
 		cond do
 			algorithm == "gossip" -> Gossipclasses.NodeGossip.start_rumour(starter_pid, message)
-			algorithm == "push_sum" -> Gossipclasses.NodePushSum.receive_message(starter_pid, s, w)
+			algorithm == "push-sum" -> Gossipclasses.NodePushSum.receive_message(starter_pid, s, w)
 		end
 		# {:noreply, 1}
 	end
@@ -88,7 +88,7 @@ Function to set all the neighbours of
 			# IO.inspect(test)
       cond do
         algorithm == "gossip" -> Gossipclasses.NodeGossip.update_neighbours(Map.get(id_pid, key), neighbours)
-        algorithm == "push_sum" -> Gossipclasses.NodeGossip.update_neighbours(Map.get(id_pid, key), neighbours)
+        algorithm == "push-sum" -> Gossipclasses.NodeGossip.update_neighbours(Map.get(id_pid, key), neighbours)
       end
 
 			# IO.puts "#{k} --> #{v}"
@@ -105,7 +105,7 @@ Function to set all the neighbours of
 
   def updated_num(topology, num_nodes)  do
 
-    num_nodes_temp = if topology == "3dtorus" do
+    num_nodes_temp = if topology == "3Dtorus" do
       rows = :math.pow(num_nodes,1/3) |> ceil
       Kernel.trunc(:math.pow(rows, 3))
     else
@@ -116,8 +116,8 @@ Function to set all the neighbours of
   end
   def update_num_nodes(topology, num_nodes) do
     num_nodes = cond do
-      topology == "3dtorus" -> Gossipclasses.Utils.updated_num(topology, num_nodes)
-      topology == "2dgrid" -> Gossipclasses.Utils.updated_num(topology, num_nodes)
+      topology == "3Dtorus" -> Gossipclasses.Utils.updated_num(topology, num_nodes)
+      topology == "rand2D" -> Gossipclasses.Utils.updated_num(topology, num_nodes)
       true -> num_nodes
     end
     IO.puts("Numnodes updates #{num_nodes}")
