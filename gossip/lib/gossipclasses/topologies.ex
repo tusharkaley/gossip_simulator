@@ -1,6 +1,6 @@
 defmodule Gossipclasses.Topologies do
 
-# get the number of workers,and then create adjacency matrix.
+# get the number of workers,and then create adjacency list for all the nodes.
 #this can be done by a boss worker
 
 def line(num_workers) do
@@ -74,12 +74,11 @@ def threeDtorus(num_workers) do
     rowsCube = Kernel.trunc(:math.pow(rows, 3))
     num_workers = rowsCube
     range = 1..num_workers
-    IO.puts "#{rows} , #{rowsSqrd} , #{rowsCube}"
+    # IO.puts "#{rows} , #{rowsSqrd} , #{rowsCube}"
     map = Enum.reduce range, %{}, fn x, acc ->
         neighborsList=
         cond do
             #4 corners of the torus- 1,4, 13, 16, 49, 52, 61, 64
-            # x<40 -> []
             x==1 -> [x+1, x+rows-1, x+rows, x+rowsSqrd-rows, x+rowsSqrd, x+rowsCube-rowsSqrd]
             x==rows -> [x-1, 1, x+rows, rowsSqrd, x+rowsSqrd, x+rowsCube-rowsSqrd]
             x==rowsSqrd-rows+1 -> [x+1, rowsSqrd, x-rows, 1,x+rowsSqrd, rowsCube-rows+1]
@@ -146,33 +145,90 @@ def threeDtorus(num_workers) do
         end
         Map.put(acc, x, neighborsList)
     end
-    # IO.inspect Map.get map, 61
 end
 
-
-def honeycomb(num_workers) do
-    #IN PROGRESS
+def honeycomb(num_workers) do                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
     range = 1..num_workers
-    # unless do
-    #     num_workers<6 -> line(num_workers)
-    # else
-    #     map = Enum.reduce range, %{}, fn x, acc ->
-    #         neighborsList=
-    #         cond do
-    #             #x values.
-    #         end
-    #         Map.put(acc, x, neighborsList)
-    #     end
-    #     end
+    cond do
+        num_workers < 6 -> line(num_workers)
+        num_workers >5 and num_workers <19 -> circle(num_workers)
+        num_workers >18 -> 
+            q = div num_workers,6
+            r = rem num_workers,6
+            cond do
+                r==0 -> createHeaxgons(q*6,r)
+                rem(q,2) ==0 -> 
+                    q = q-1
+                    r = r+6
+                    addR(q, r, createHeaxgons(q*6,r))
+                true-> addR(q, r, createHeaxgons(q*6,r))
+            end
+            # if rem(q,2) ==0 do
+            #     q = q-1
+            #     r = r+6
+            #     addR(q, r, createHeaxgons(q*6,r))
+            # else
+            #     addR(q, r,createHeaxgons(q*6,r))
+            # end
+    end
+end
 
-    # end
-
-
+#This method will create stacks of honeycombs with n as odd multiple of 6
+def createHeaxgons(n,r) do
+    map = Enum.reduce 1..n, %{}, fn x, acc ->
+        neighbors = cond do
+            x==1 or x==3 or x==5 -> [x+1,x+6,n+x]
+            x==2 or x==4 or x==6-> [x-1,x+6,n+x]
+            x==n or x== n-2 or x==n-4 -> [x-1,x-6,x+12]
+            x==n-1 or x==n-3 or x==n-5 -> [x+1, x-6,x+12]
+            rem(x,12) ==0 -> [x+6,x-6]
+            rem(x,6) ==0 -> [x-1,x+6,x-6]
+            rem(x,12) ==1 or  rem(x,12) ==3 or rem(x,12) ==5 -> [x+1,x+6,x-6]
+            rem(x,12) ==2 or  rem(x,12) ==4 -> [x-1,x+6,x-6]
+            rem(x,6) ==1 -> [x+6,x-6]
+            rem(x,6) ==5 or  rem(x,6) ==3 -> [x-1,x+6,x-6]
+            rem(x,6) ==2 or  rem(x,6) ==4 -> [x+1,x+6,x-6]
+        end
+        neighbors=Enum.reject(neighbors, fn x -> x>(n+r) or x<1 end)
+        Map.put(acc, x, neighbors)
+    end
 
 end
 
-def randHoneyComb(num_workers) do
-    #IN PROGRESS
+#add the ends of a honeycomb
+def addR(q,r,map) do
+n = q*6
+ends = 1..r
+map_r = Enum.reduce ends,map, fn x, acc ->
+    neighbors = cond do
+        x<7 -> [x]
+        x>6 -> [x+n-12]
+    end
+    neighbors=Enum.reject(neighbors, fn y -> y<1 end)
+    Map.put(acc,n+x,neighbors)
+    end
+
+end
+
+#one hexagon
+def circle(workers) do
+    map = line(workers)
+    list = [2,workers]
+    map = Map.replace! map, 1, list
+    list = [workers-1,1]
+    map = Map.replace! map, workers, list
+end
+
+def randHoneyComb(num) do
+    neighborsMap = honeycomb(num)
+    range = 1..num
+    map = Enum.reduce range,neighborsMap, fn x, acc->
+        nodesList =  (Enum.to_list range) -- [x]
+        IO.inspect nodesList
+        list = Map.get(neighborsMap,x) ++ [Enum.random nodesList]
+        IO.inspect list
+        Map.put acc,x,list
+    end
 
 end
 
