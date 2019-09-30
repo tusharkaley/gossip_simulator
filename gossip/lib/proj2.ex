@@ -15,12 +15,11 @@ defmodule Proj2.CLI do
     topology == "honeycomb" -> Gossipclasses.Topologies.honeycomb(num_nodes)
     topology == "honeycombRandom" -> Gossipclasses.Topologies.randHoneyComb(num_nodes)
   end
-
   cond do
-    algorithm == "gossip" -> Gossipclasses.Utils.add_children(Gossipclasses.NodeGossip, num_nodes, adj_list, topology)
-    algorithm == "push_sum" -> Gossipclasses.Utils.add_children(Gossipclasses.NodePushSum, num_nodes, adj_list, topology)
+    algorithm == "gossip" -> Gossipclasses.Utils.add_children(Gossipclasses.NodeGossip, num_nodes,algorithm,topology, adj_list)
+    algorithm == "push-sum" -> Gossipclasses.Utils.add_children(Gossipclasses.NodePushSum, num_nodes,algorithm,topology, adj_list)
   end
-  Process.sleep(20)
+
   IO.puts ("Numnodes is #{num_nodes}")
 	# Get the adjancency list based on the topology that was passed in the arguments
 
@@ -39,7 +38,7 @@ defmodule Proj2.CLI do
     w = 0
     cond do
       algorithm == "gossip" -> Gossipclasses.Utils.spread_rumour(algorithm, message)
-      algorithm == "push_sum" -> Gossipclasses.Utils.spread_rumour(algorithm, s, w)
+      algorithm == "push-sum" -> Gossipclasses.Utils.spread_rumour(algorithm, s, w)
     end
 
     # We wait on the Node_tracker to tell us to initiate shutdown

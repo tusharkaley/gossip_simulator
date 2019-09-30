@@ -20,24 +20,37 @@ defmodule Gossipclasses.Utils do
 	@doc """
 		Function to get the child Spec for the workers
 	"""
-	def add_children(child_class, num_nodes, adj_list, topology) do
+	def add_children(child_class, num_nodes,algorithm, topology, adj_list) do
+		if algorithm == "gossip" do
+			Enum.each(1..num_nodes, fn(x) ->
+        # {:ok, child} = DynamicSupervisor.start_child(Gossipclasses.Supervisor, Gossipclasses.Utils.get_child_spec(Gossipclasses.NodeGossip, x))
+        neighbours = if topology == "full" do
+          all_nodes = Enum.to_list 1..num_nodes
+          List.delete(all_nodes, x)
+        else
+          Map.get(adj_list, x)
+        end
+        {:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {child_class, :start_link, [neighbours]}, :restart => :transient,:type => :worker})
+          IO.inspect(child)
+          if (x == 1) do
+            Gossipclasses.Utils.set_start_child(child)
+          end
+        end
+        )
+		else
+			Enum.each(1..num_nodes, fn(x) ->
+				# {:ok, child} = DynamicSupervisor.start_child(Gossipclasses.Supervisor, Gossipclasses.Utils.get_child_spec(Gossipclasses.NodeGossip, x))
+				{:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {child_class, :start_link, [x]}, :restart => :transient,:type => :worker})
+				  IO.inspect(child)
+				  if (x == 1) do
+					  Gossipclasses.Utils.set_start_child(child)
+				  end
+				end
+			  )
 
-    Enum.each(1..num_nodes, fn(x) ->
-      # {:ok, child} = DynamicSupervisor.start_child(Gossipclasses.Supervisor, Gossipclasses.Utils.get_child_spec(Gossipclasses.NodeGossip, x))
-      neighbours = if topology == "full" do
-        all_nodes = Enum.to_list 1..num_nodes
-        List.delete(all_nodes, x)
-      else
-        Map.get(adj_list, x)
-      end
-			{:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {child_class, :start_link, [neighbours]}, :restart => :transient,:type => :worker})
-			  IO.inspect(child)
-			  if (x == 1) do
-				  Gossipclasses.Utils.set_start_child(child)
-			  end
-			end
-		  )
-		  Supervisor.start_child(Gossipclasses.Supervisor, %{:id => :tracker, :start => {Gossipclasses.NodeTracker, :start_link, [self(), num_nodes]}, :restart => :transient,:type => :worker})
+		end
+
+		Supervisor.start_child(Gossipclasses.Supervisor, %{:id => :tracker, :start => {Gossipclasses.NodeTracker, :start_link, [self(), num_nodes]}, :restart => :transient,:type => :worker})
 
 	end
 
@@ -58,7 +71,7 @@ defmodule Gossipclasses.Utils do
 		Logger.debug("Inside getsetgo")
 		cond do
 			algorithm == "gossip" -> Gossipclasses.NodeGossip.start_rumour(starter_pid, message)
-			algorithm == "push_sum" -> Gossipclasses.NodePushSum.receive_message(starter_pid, s, w)
+			algorithm == "push-sum" -> Gossipclasses.NodePushSum.receive_message(starter_pid, s, w)
 		end
 		# {:noreply, 1}
 	end
@@ -81,12 +94,13 @@ Function to set all the neighbours of
         if !match?({:tracker, _ }, {key,val}) do
           cond do
             algorithm == "gossip" -> Gossipclasses.NodeGossip.update_id_pid(val, id_pid)
-            algorithm == "push_sum" -> Gossipclasses.NodeGossip.update_id_pid(val, id_pid)
+            algorithm == "push-sum" -> Gossipclasses.NodeGossip.update_id_pid(val, id_pid)
           end
         end
         # IO.puts "#{k} --> #{v}"
     end
 	# IO.inspect(id_pid)
+
 	end
 
 	def log_time do
@@ -99,7 +113,7 @@ Function to set all the neighbours of
 
   def updated_num(topology, num_nodes)  do
 
-    num_nodes_temp = if topology == "3dtorus" do
+    num_nodes_temp = if topology == "3Dtorus" do
       rows = :math.pow(num_nodes,1/3) |> ceil
       Kernel.trunc(:math.pow(rows, 3))
     else
@@ -110,8 +124,8 @@ Function to set all the neighbours of
   end
   def update_num_nodes(topology, num_nodes) do
     num_nodes = cond do
-      topology == "3dtorus" -> Gossipclasses.Utils.updated_num(topology, num_nodes)
-      topology == "2dgrid" -> Gossipclasses.Utils.updated_num(topology, num_nodes)
+      topology == "3Dtorus" -> Gossipclasses.Utils.updated_num(topology, num_nodes)
+      topology == "rand2D" -> Gossipclasses.Utils.updated_num(topology, num_nodes)
       true -> num_nodes
     end
     IO.puts("Numnodes updates #{num_nodes}")
