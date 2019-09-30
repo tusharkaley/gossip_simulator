@@ -20,10 +20,17 @@ defmodule Gossipclasses.Utils do
 	@doc """
 		Function to get the child Spec for the workers
 	"""
-	def add_children(child_class, num_nodes) do
-		Enum.each(1..num_nodes, fn(x) ->
-			# {:ok, child} = DynamicSupervisor.start_child(Gossipclasses.Supervisor, Gossipclasses.Utils.get_child_spec(Gossipclasses.NodeGossip, x))
-			{:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {child_class, :start_link, []}, :restart => :transient,:type => :worker})
+	def add_children(child_class, num_nodes, adj_list, topology) do
+
+    Enum.each(1..num_nodes, fn(x) ->
+      # {:ok, child} = DynamicSupervisor.start_child(Gossipclasses.Supervisor, Gossipclasses.Utils.get_child_spec(Gossipclasses.NodeGossip, x))
+      neighbours = if topology == "full" do
+        all_nodes = Enum.to_list 1..num_nodes
+        List.delete(all_nodes, x)
+      else
+        Map.get(adj_list, x)
+      end
+			{:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {child_class, :start_link, [neighbours]}, :restart => :transient,:type => :worker})
 			  IO.inspect(child)
 			  if (x == 1) do
 				  Gossipclasses.Utils.set_start_child(child)
@@ -58,7 +65,7 @@ defmodule Gossipclasses.Utils do
 @doc """
 Function to set all the neighbours of
 """
-  def set_all_neighbours(algorithm, adj_list) do
+  def set_all_neighbours(algorithm) do
 
     # Building the id -> PID map
 	  sup_children = Supervisor.which_children(Gossipclasses.Supervisor)
@@ -69,24 +76,25 @@ Function to set all the neighbours of
     end
     # map
 	# test = Enum.map([1,2,4], fn(x) -> Map.get(id_pid, x) end)
-	Enum.each  adj_list,  fn {key, val} ->
-			neighbours = Enum.map(val, fn(x) -> Map.get(id_pid, x) end)
-			# IO.inspect(test)
-      cond do
-        algorithm == "gossip" -> Gossipclasses.NodeGossip.update_neighbours(Map.get(id_pid, key), neighbours)
-        algorithm == "push_sum" -> Gossipclasses.NodeGossip.update_neighbours(Map.get(id_pid, key), neighbours)
-      end
-
-			# IO.puts "#{k} --> #{v}"
-	end
-	IO.inspect(id_pid)
+    Enum.each  id_pid,  fn {key, val} ->
+        IO.puts("Value is #{inspect id_pid}")
+        if !match?({:tracker, _ }, {key,val}) do
+          cond do
+            algorithm == "gossip" -> Gossipclasses.NodeGossip.update_id_pid(val, id_pid)
+            algorithm == "push_sum" -> Gossipclasses.NodeGossip.update_id_pid(val, id_pid)
+          end
+        end
+        # IO.puts "#{k} --> #{v}"
+    end
+	# IO.inspect(id_pid)
 	end
 
 	def log_time do
 		start_time = Gossipclasses.NodeTracker.get_start_time()
 		time_now = Time.utc_now()
 		time_diff = Time.diff(time_now, start_time, :millisecond)
-		Logger.debug("The time difference is #{time_diff}")
+    Logger.debug("The time difference is #{time_diff}")
+
   end
 
   def updated_num(topology, num_nodes)  do

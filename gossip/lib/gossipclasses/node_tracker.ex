@@ -15,13 +15,6 @@ defmodule Gossipclasses.NodeTracker do
 	end
 
 	@doc """
-	Function to update the node_store state with the
-	key values for all the workers that are online
-	"""
-	def add_all_to_state do
-		GenServer.cast(:tracker, {:update_state})
-	end
-	@doc """
 		Function to get the start time of the protocol.
 	"""
 	def get_start_time do
@@ -37,47 +30,27 @@ defmodule Gossipclasses.NodeTracker do
 		{:ok, node_store}
 	end
 
-	@impl true
-  	def handle_cast({:update_state}, node_store) do
-    	Logger.log(:debug, "PID: #{inspect self()} node state: #{inspect node_store}" )
-
-		# Get all the children of the supervisor
-		sup_children = Supervisor.which_children(Gossipclasses.Supervisor)
-
-		# For each child add an entry in the node_store state
-    	node_store_temp = Enum.reduce sup_children, node_store, fn child, acc ->
-				pid = elem(child, 1)
-        		pid_str = inspect pid
-          		Map.put(acc, pid_str, false)
-      	end
-
-    	node_store_temp = Map.put(node_store_temp, "time_start", Map.get(node_store, "time_start"))
-    	node_store_temp = Map.put(node_store_temp, "done_count", Map.get(node_store, "done_count"))
-		node_store = node_store_temp
-
-    	{:noreply, node_store}
-
-	end
 	@doc """
 	Server side function mark a worker as done
 	"""
 	@impl true
 	def handle_cast({:mark_done, sender}, node_store) do
 
-		sender_str = inspect(sender)
-		node_store = Map.put(node_store, sender_str, true)
+		# _sender_str = inspect(sender)
+    # node_store = Map.put(node_store, sender_str, true)
+    IO.puts("Test: #{inspect node_store}")
 		node_store = Map.put(node_store, "done_count", node_store["done_count"]+1)
 		done_count = Map.get(node_store, "done_count")
 		num_nodes = Map.get(node_store, "num_nodes")
 		done_percentage = (done_count/num_nodes) * 100
-
+		IO.puts("Done count is #{done_count}")
 		if done_percentage > 90.0 do
 			Logger.log(:warn, "Done %age > 80" )
 			terminate_addr = Map.get(node_store, "script_pid")
 
 			send(terminate_addr, {:terminate_now, self()})
 		end
-		Logger.log(:debug, "PID: #{inspect sender} node state: #{inspect node_store}" )
+		Logger.log(:debug, "node state: #{inspect node_store}" )
 		{:noreply, node_store}
 	end
 	@doc """
