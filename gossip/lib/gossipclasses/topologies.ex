@@ -2,7 +2,7 @@ defmodule Gossipclasses.Topologies do
 
 # get the number of workers,and then create adjacency list for all the nodes.
 #this can be done by a boss worker
-
+@grid_dist 0.15
 def line(num_workers) do
     range =Enum.to_list 1..num_workers
     map = Enum.reduce range, %{}, fn x, acc ->
@@ -61,8 +61,8 @@ def closeEnough(pos1,pos2) do
     dist = x+y |> :math.sqrt
     # IO.puts "dist = #{dist}"
     cond do
-        dist>=0.4 -> false
-        dist<0.4 -> true
+        dist>=@grid_dist -> false
+        dist<@grid_dist -> true
     end
 
 end
