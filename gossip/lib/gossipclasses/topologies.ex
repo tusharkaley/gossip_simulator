@@ -35,15 +35,14 @@ def random2D(num_workers) do
         position = [:rand.uniform(), :rand.uniform()]
         Map.put(acc,x,position)
     end
-    IO.inspect grid
+    # IO.inspect grid
     Enum.reduce range, %{} , fn x, acc->
         all =  Map.keys grid
         list = List.delete all, x
-        neighbors=[]
         neighbors= Enum.reduce list, [], fn (y, accu) ->
                     pos1 = Map.get grid, x
                     pos2 = Map.get grid, y
-                    IO.puts "Distance between #{x} and #{y}"
+                    # IO.puts "Distance between #{x} and #{y}"
                     if closeEnough(pos1,pos2) do
                         [y|accu]
                     else
@@ -60,7 +59,7 @@ def closeEnough(pos1,pos2) do
     x = :math.pow((Enum.at(pos1, 0) - Enum.at(pos2, 0)) ,2)
     y = :math.pow((Enum.at(pos1, 1) - Enum.at(pos2, 1)) ,2)
     dist = x+y |> :math.sqrt
-    IO.puts "dist = #{dist}"
+    # IO.puts "dist = #{dist}"
     cond do
         dist>=0.4 -> false
         dist<0.4 -> true
@@ -69,6 +68,7 @@ def closeEnough(pos1,pos2) do
 end
 
 def threeDtorus(num_workers) do
+    # IO.puts("Inside 3dt adj list")
     rows =ceil(:math.pow(num_workers,1/3))
     rowsSqrd = Kernel.trunc(:math.pow(rows, 2))
     rowsCube = Kernel.trunc(:math.pow(rows, 3))
@@ -145,19 +145,20 @@ def threeDtorus(num_workers) do
         end
         Map.put(acc, x, neighborsList)
     end
+    map
 end
 
-def honeycomb(num_workers) do                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
-    range = 1..num_workers
+def honeycomb(num_workers) do
+    # range = 1..num_workers
     cond do
         num_workers < 6 -> line(num_workers)
         num_workers >5 and num_workers <19 -> circle(num_workers)
-        num_workers >18 -> 
+        num_workers >18 ->
             q = div num_workers,6
             r = rem num_workers,6
             cond do
                 r==0 -> createHeaxgons(q*6,r)
-                rem(q,2) ==0 -> 
+                rem(q,2) ==0 ->
                     q = q-1
                     r = r+6
                     addR(q, r, createHeaxgons(q*6,r))
@@ -192,6 +193,7 @@ def createHeaxgons(n,r) do
         neighbors=Enum.reject(neighbors, fn x -> x>(n+r) or x<1 end)
         Map.put(acc, x, neighbors)
     end
+    map
 
 end
 
@@ -224,9 +226,9 @@ def randHoneyComb(num) do
     range = 1..num
     map = Enum.reduce range,neighborsMap, fn x, acc->
         nodesList =  (Enum.to_list range) -- [x]
-        IO.inspect nodesList
+        # IO.inspect nodesList
         list = Map.get(neighborsMap,x) ++ [Enum.random nodesList]
-        IO.inspect list
+        # IO.inspect list
         Map.put acc,x,list
     end
 

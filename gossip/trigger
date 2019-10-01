@@ -1,0 +1,264 @@
+#!/bin/bash
+echo "GOSSIP"
+echo "Line gossip 100" 
+./proj2 100 line gossip
+
+echo "-----------------------------------------------------------"
+echo "Line gossip 500"
+
+
+./proj2 500 line gossip
+echo "-----------------------------------------------------------"
+
+echo "Line gossip 1000"
+
+./proj2 1000 line gossip
+echo "-----------------------------------------------------------"
+
+echo "Full gossip 100" 
+
+./proj2 100 full gossip
+echo "-----------------------------------------------------------"
+
+echo "Full gossip 500"
+./proj2 500 full gossip
+echo "-----------------------------------------------------------"
+
+echo "Full gossip 1000"
+./proj2 1000 full gossip
+echo "-----------------------------------------------------------"
+
+echo "3dtorus gossip 100" 
+./proj2 100 3dtorus gossip
+echo "-----------------------------------------------------------"
+
+echo "3dtorus gossip 500"
+./proj2 500 3dtorus gossip
+echo "-----------------------------------------------------------"
+
+echo "3dtorus gossip 1000"
+./proj2 1000 3dtorus gossip
+echo "-----------------------------------------------------------"
+
+echo "2dgrid gossip 100" 
+./proj2 100 2dgrid gossip
+echo "-----------------------------------------------------------"
+echo "2dgrid gossip 500"
+
+./proj2 500 2dgrid gossip
+echo "-----------------------------------------------------------"
+
+echo "2dgrid gossip 1000"
+
+./proj2 1000 2dgrid gossip
+echo "-----------------------------------------------------------"
+
+echo "honeycomb gossip 100" 
+
+./proj2 100 honeycomb gossip
+echo "-----------------------------------------------------------"
+
+echo "honeycomb gossip 500"
+
+
+./proj2 500 honeycomb gossip
+echo "-----------------------------------------------------------"
+
+echo "honeycomb gossip 1000"
+./proj2 1000 honeycomb gossip
+
+echo "-----------------------------------------------------------"
+echo "honeycombRandom gossip 100" 
+./proj2 100 honeycombRandom gossip
+echo "-----------------------------------------------------------"
+
+echo "honeycombRandom gossip 500"
+./proj2 500 honeycombRandom gossip
+echo "-----------------------------------------------------------"
+
+echo "honeycombRandom gossip 1000"
+./proj2 1000 honeycombRandom gossip
+echo "-----------------------------------------------------------"
+
+
+echo "line gossip 10000"
+./proj2 10000 line gossip
+echo "-----------------------------------------------------------"
+
+echo "full gossip 10000"
+./proj2 10000 full gossip
+echo "-----------------------------------------------------------"
+
+echo "3dtorus gossip 10000"
+./proj2 10000 3dtorus gossip
+echo "-----------------------------------------------------------"
+
+echo "2dgrid gossip 10000"
+./proj2 10000 2dgrid gossip
+echo "-----------------------------------------------------------"
+
+echo "honeycomb gossip 10000"
+./proj2 10000 honeycomb gossip
+echo "-----------------------------------------------------------"
+
+echo "honeycombRandom gossip 10000"
+./proj2 10000 honeycombRandom gossip
+echo "-----------------------------------------------------------"
+
+
+# echo "line gossip 50000"
+# ./proj2 50000 line gossip
+# echo "-----------------------------------------------------------"
+
+# echo "full gossip 50000"
+# ./proj2 50000 full gossip
+# echo "-----------------------------------------------------------"
+
+# echo "3dtorus gossip 50000"
+# ./proj2 50000 3dtorus gossip
+# echo "-----------------------------------------------------------"
+
+# echo "2dgrid gossip 50000"
+# ./proj2 50000 2dgrid gossip
+# echo "-----------------------------------------------------------"
+
+# echo "honeycomb gossip 50000"
+# ./proj2 50000 honeycomb gossip
+# echo "-----------------------------------------------------------"
+
+# echo "honeycombRandom gossip 50000"
+# ./proj2 50000 honeycombRandom gossip
+# echo "-----------------------------------------------------------"
+
+echo "PUSH-SUM"
+
+#!/bin/bash
+echo "Line push-sum 100" 
+./proj2 100 line push-sum
+
+echo "-----------------------------------------------------------"
+echo "Line push-sum 500"
+
+
+./proj2 500 line push-sum
+echo "-----------------------------------------------------------"
+
+echo "Line push-sum 1000"
+
+./proj2 1000 line push-sum
+echo "-----------------------------------------------------------"
+
+echo "Full push-sum 100" 
+
+./proj2 100 full push-sum
+echo "-----------------------------------------------------------"
+
+echo "Full push-sum 500"
+./proj2 500 full push-sum
+echo "-----------------------------------------------------------"
+
+echo "Full push-sum 1000"
+./proj2 1000 full push-sum
+echo "-----------------------------------------------------------"
+
+echo "3dtorus push-sum 100" 
+./proj2 100 3dtorus push-sum
+echo "-----------------------------------------------------------"
+
+echo "3dtorus push-sum 500"
+./proj2 500 3dtorus push-sum
+echo "-----------------------------------------------------------"
+
+echo "3dtorus push-sum 1000"
+./proj2 1000 3dtorus push-sum
+echo "-----------------------------------------------------------"
+
+echo "2dgrid push-sum 100" 
+./proj2 100 2dgrid push-sum
+echo "-----------------------------------------------------------"
+echo "2dgrid push-sum 500"
+
+./proj2 500 2dgrid push-sum
+echo "-----------------------------------------------------------"
+
+echo "2dgrid push-sum 1000"
+
+./proj2 1000 2dgrid push-sum
+echo "-----------------------------------------------------------"
+
+echo "honeycomb push-sum 100" 
+
+./proj2 100 honeycomb push-sum
+echo "-----------------------------------------------------------"
+
+echo "honeycomb push-sum 500"
+
+
+./proj2 500 honeycomb push-sum
+echo "-----------------------------------------------------------"
+
+echo "honeycomb push-sum 1000"
+./proj2 1000 honeycomb push-sum
+
+echo "-----------------------------------------------------------"
+echo "honeycombRandom push-sum 100" 
+./proj2 100 honeycombRandom push-sum
+echo "-----------------------------------------------------------"
+
+echo "honeycombRandom push-sum 500"
+./proj2 500 honeycombRandom push-sum
+echo "-----------------------------------------------------------"
+
+echo "honeycombRandom push-sum 1000"
+./proj2 1000 honeycombRandom push-sum
+echo "-----------------------------------------------------------"
+
+
+echo "line push-sum 10000"
+./proj2 10000 line push-sum
+echo "-----------------------------------------------------------"
+
+echo "full push-sum 10000"
+./proj2 10000 full push-sum
+echo "-----------------------------------------------------------"
+
+echo "3dtorus push-sum 10000"
+./proj2 10000 3dtorus push-sum
+echo "-----------------------------------------------------------"
+
+echo "2dgrid push-sum 10000"
+./proj2 10000 2dgrid push-sum
+echo "-----------------------------------------------------------"
+
+echo "honeycomb push-sum 10000"
+./proj2 10000 honeycomb push-sum
+echo "-----------------------------------------------------------"
+
+echo "honeycombRandom push-sum 10000"
+./proj2 10000 honeycombRandom push-sum
+echo "-----------------------------------------------------------"
+
+
+# echo "line push-sum 50000"
+# ./proj2 50000 line push-sum
+# echo "-----------------------------------------------------------"
+
+# echo "full push-sum 50000"
+# ./proj2 50000 full push-sum
+# echo "-----------------------------------------------------------"
+
+# echo "3dtorus push-sum 50000"
+# ./proj2 50000 3dtorus push-sum
+# echo "-----------------------------------------------------------"
+
+# echo "2dgrid push-sum 50000"
+# ./proj2 50000 2dgrid push-sum
+# echo "-----------------------------------------------------------"
+
+# echo "honeycomb push-sum 50000"
+# ./proj2 50000 honeycomb push-sum
+# echo "-----------------------------------------------------------"
+
+# echo "honeycombRandom push-sum 50000"
+# ./proj2 50000 honeycombRandom push-sum
+# echo "-----------------------------------------------------------"
