@@ -71,6 +71,7 @@ defmodule Gossipclasses.NodeGossip do
       # IO.puts("Neighbours are #{inspect neighbours} Sender PID: #{inspect sender} id: #{inspect sender_id}")
       neighbours_upd = if length(neighbours) > 1 do
         List.delete(neighbours, sender_id)
+        # neighbours
       else
         neighbours
       end
