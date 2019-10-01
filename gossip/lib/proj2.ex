@@ -16,8 +16,8 @@ defmodule Proj2.CLI do
     topology == "honeycombRandom" -> Gossipclasses.Topologies.randHoneyComb(num_nodes)
   end
   cond do
-    algorithm == "gossip" -> Gossipclasses.Utils.add_children(Gossipclasses.NodeGossip, num_nodes,algorithm,topology, adj_list)
-    algorithm == "push-sum" -> Gossipclasses.Utils.add_children(Gossipclasses.NodePushSum, num_nodes,algorithm,topology, adj_list)
+    algorithm == "gossip" -> Gossipclasses.Utils.add_children(Gossipclasses.NodeGossip, num_nodes,algorithm,topology, adj_list,self())
+    algorithm == "push-sum" -> Gossipclasses.Utils.add_children(Gossipclasses.NodePushSum, num_nodes,algorithm,topology, adj_list,self())
   end
 
   IO.puts ("Numnodes is #{num_nodes}")

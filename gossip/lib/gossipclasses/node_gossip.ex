@@ -79,12 +79,12 @@ defmodule Gossipclasses.NodeGossip do
 
 	def handle_cast({:start_rumour, message}, node_state) do
 		neighbours = Map.get(node_state, "neighbours")
-    target = Enum.random(neighbours)
-    id_pid = Map.get(node_state, "id_pid")
-    target = Map.get(id_pid, target)
+    	target = Enum.random(neighbours)
+    	id_pid = Map.get(node_state, "id_pid")
+    	target = Map.get(id_pid, target)
 		Gossipclasses.NodeGossip.receive_message(target, message)
 		{:noreply, node_state}
-  end
+ 	end
 
   def handle_info(:psssst, node_state) do
     neighbours = Map.get(node_state, "neighbours")
