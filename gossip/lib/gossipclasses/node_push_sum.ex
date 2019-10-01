@@ -19,7 +19,7 @@ defmodule Gossipclasses.NodePushSum do
 	# end
 
 	def update_id_pid(pid, id_pid) do
-		Logger.log(:debug, "Update neighbours: My PID is #{inspect pid} and my node state is #{inspect id_pid}" )
+		# Logger.log(:debug, "Update neighbours: My PID is #{inspect pid} and my node state is #{inspect id_pid}" )
 		GenServer.cast(pid, {:add_id_pid, id_pid})
 	end
 

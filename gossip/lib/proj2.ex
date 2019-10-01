@@ -41,10 +41,11 @@ defmodule Proj2.CLI do
       algorithm == "gossip" -> Gossipclasses.Utils.spread_rumour(algorithm, message)
       algorithm == "push-sum" -> Gossipclasses.Utils.spread_rumour(algorithm, s, w)
     end
+    start_time = Time.utc_now()
 
     # We wait on the Node_tracker to tell us to initiate shutdown
     receive do
-      {:terminate_now, _pid} -> Gossipclasses.Utils.log_time()
+      {:terminate_now, _pid} -> Gossipclasses.Utils.log_time(start_time)
     end
     Supervisor.stop(Gossipclasses.Supervisor)
   end

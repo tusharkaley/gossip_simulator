@@ -39,16 +39,16 @@ defmodule Gossipclasses.NodeTracker do
 
 		# _sender_str = inspect(sender)
     # node_store = Map.put(node_store, sender_str, true)
-    IO.puts("Mark as done entry")
+    # IO.puts("Mark as done entry")
 		node_store = Map.put(node_store, "done_count", node_store["done_count"]+1)
 		done_count = Map.get(node_store, "done_count")
 		num_nodes = Map.get(node_store, "num_nodes")
 		done_percentage = (done_count/num_nodes) * 100
-		IO.puts("Done count is #{done_count}")
+		# IO.puts("Done count is #{done_count}")
 		if done_percentage > 90.0 do
-			Logger.log(:warn, "We are about to shut down")
+			Logger.log(:warn, "We are about to shut down #{inspect node_store}")
 			terminate_addr = Map.get(node_store, "script_pid")
-			# Logger.log(:warn, "terminate_addr is as follows: #{terminate_addr}")
+			Logger.log(:warn, "terminate_addr is as follows: #{inspect terminate_addr}")
 			send(terminate_addr, {:terminate_now, self()})
 		end
 		# Logger.log(:debug, "node state: #{inspect node_store}" )

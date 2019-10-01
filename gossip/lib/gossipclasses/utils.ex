@@ -122,16 +122,14 @@ Function to set all the neighbours of
             IO.puts("Processed #{key}")
           end
         end
-
-        # IO.puts "#{k} --> #{v}"
     end
 	# IO.inspect(id_pid)
 
 	end
 
-	def log_time do
-		Logger.debug("Inside log_time, get start_time")
-		start_time = Gossipclasses.NodeTracker.get_start_time()
+	def log_time(start_time) do
+		# Logger.debug("Inside log_time, get start_time")
+		# start_time = Gossipclasses.NodeTracker.get_start_time()
 		time_now = Time.utc_now()
 		time_diff = Time.diff(time_now, start_time, :millisecond)
     	Logger.debug("The time difference is #{time_diff}")
