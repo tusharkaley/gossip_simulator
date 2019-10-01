@@ -31,7 +31,7 @@ defmodule Gossipclasses.Utils do
 
 		if algorithm == "gossip" do
         {:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {child_class, :start_link, [neighbours]}, :restart => :transient,:type => :worker})
-          IO.inspect(child)
+
           if (x == 1) do
             Gossipclasses.Utils.set_start_child(child)
           end
@@ -50,8 +50,28 @@ defmodule Gossipclasses.Utils do
 
 	def set_start_child(pid) do
 		:ets.new(:start_child, [:named_table])
-		:ets.insert(:start_child, {"start_child_pid", pid})
+    :ets.insert(:start_child, {"start_child_pid", pid})
 	end
+
+  def set_id_pid_table(id_pid, pid_to_id) do
+    :ets.new(:id_pid_mapping, [:named_table, read_concurrency: true])
+    :ets.insert(:id_pid_mapping, {"id_pid", id_pid})
+
+    :ets.new(:pid_id_mapping, [:named_table, read_concurrency: true])
+    :ets.insert(:pid_id_mapping, {"pid_to_id", pid_to_id})
+
+    # IO.puts("Added to table")
+    # IO.inspect(id_pid)
+  end
+
+  def get_pid(id) do
+    tup = :ets.lookup(:id_pid_mapping, "id_pid")
+		[head| _tail] = tup
+    id_pid = elem(head, 1)
+    # IO.inspect(id_pid)
+    pid = Map.get(id_pid, id)
+    pid
+  end
 
 	def spread_rumour(algorithm, message \\ nil, s \\ 0, w \\ 0) do
 		# TODO: Maybe we should just start the worker with ID 1 because in any topology it should
@@ -60,7 +80,6 @@ defmodule Gossipclasses.Utils do
 		tup = :ets.lookup(:start_child, "start_child_pid")
 		[head| _tail] = tup
 		starter_pid = elem(head, 1)
-		IO.inspect(starter_pid)
 
 		Logger.debug("Inside getsetgo")
 		cond do
@@ -72,7 +91,7 @@ defmodule Gossipclasses.Utils do
 @doc """
 Function to set all the neighbours of
 """
-  def set_all_neighbours(algorithm) do
+  def set_all_neighbours(algorithm, _num_nodes) do
 
     # Building the id -> PID map
 	  sup_children = Supervisor.which_children(Gossipclasses.Supervisor)
@@ -81,16 +100,29 @@ Function to set all the neighbours of
       pid = elem(x,1)
       Map.put(acc, id, pid)
     end
+    pid_id = Enum.reduce(id_pid, %{}, fn {k, vs}, acc ->
+      Map.put(acc,vs,k)
+    end)
+
+    # if num_nodes > 9000 do
+    #   Gossipclasses.Utils.set_id_pid_table(id_pid, pid_id)
+    # end
+
+
     # map
-	# test = Enum.map([1,2,4], fn(x) -> Map.get(id_pid, x) end)
+
     Enum.each  id_pid,  fn {key, val} ->
-        IO.puts("Value is #{inspect id_pid}")
         if !match?({:tracker, _ }, {key,val}) do
           cond do
-            algorithm == "gossip" -> Gossipclasses.NodeGossip.update_id_pid(val, id_pid)
+
+            algorithm == "gossip" -> Gossipclasses.NodeGossip.update_id_pid(val, id_pid, pid_id)
             algorithm == "push-sum" -> Gossipclasses.NodePushSum.update_id_pid(val, id_pid)
           end
+          if rem(key,500) == 0 do
+            IO.puts("Processed #{key}")
+          end
         end
+
         # IO.puts "#{k} --> #{v}"
     end
 	# IO.inspect(id_pid)
@@ -107,7 +139,7 @@ Function to set all the neighbours of
 
   def updated_num(topology, num_nodes)  do
 
-    num_nodes_temp = if topology == "3Dtorus" do
+    num_nodes_temp = if topology == "3dtorus" do
       rows = :math.pow(num_nodes,1/3) |> ceil
       Kernel.trunc(:math.pow(rows, 3))
     else
@@ -119,11 +151,10 @@ Function to set all the neighbours of
 
   def update_num_nodes(topology, num_nodes) do
     num_nodes = cond do
-      topology == "3Dtorus" -> Gossipclasses.Utils.updated_num(topology, num_nodes)
-      topology == "rand2D" -> Gossipclasses.Utils.updated_num(topology, num_nodes)
+      topology == "3dtorus" -> Gossipclasses.Utils.updated_num(topology, num_nodes)
+      topology == "2dgrid" -> Gossipclasses.Utils.updated_num(topology, num_nodes)
       true -> num_nodes
     end
-    IO.puts("Numnodes updates #{num_nodes}")
     num_nodes
 
   end

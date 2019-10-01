@@ -10,8 +10,8 @@ defmodule Gossipclasses.NodeTracker do
 	@doc """
 	Function to mark the sender as done in the tracker map
 	"""
-	def mark_as_done(sender) do
-		GenServer.cast(:tracker, {:mark_done, sender})
+	def mark_as_done() do
+		GenServer.cast(:tracker, {:mark_done})
 	end
 
 	@doc """
@@ -34,10 +34,12 @@ defmodule Gossipclasses.NodeTracker do
 	Server side function mark a worker as done
 	"""
 	@impl true
-	def handle_cast({:mark_done, sender}, node_store) do
-	# _sender_str = inspect(sender)
+
+	def handle_cast({:mark_done}, node_store) do
+
+		# _sender_str = inspect(sender)
     # node_store = Map.put(node_store, sender_str, true)
-    IO.puts("Test: #{inspect node_store}")
+    IO.puts("Mark as done entry")
 		node_store = Map.put(node_store, "done_count", node_store["done_count"]+1)
 		done_count = Map.get(node_store, "done_count")
 		num_nodes = Map.get(node_store, "num_nodes")
@@ -49,7 +51,7 @@ defmodule Gossipclasses.NodeTracker do
 			# Logger.log(:warn, "terminate_addr is as follows: #{terminate_addr}")
 			send(terminate_addr, {:terminate_now, self()})
 		end
-		Logger.log(:debug, "node state: #{inspect node_store}")
+		# Logger.log(:debug, "node state: #{inspect node_store}" )
 		{:noreply, node_store}
 	end
 	@doc """

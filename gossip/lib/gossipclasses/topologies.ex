@@ -69,6 +69,7 @@ def closeEnough(pos1,pos2) do
 end
 
 def threeDtorus(num_workers) do
+    IO.puts("Inside 3dt adj list")
     rows =ceil(:math.pow(num_workers,1/3))
     rowsSqrd = Kernel.trunc(:math.pow(rows, 2))
     rowsCube = Kernel.trunc(:math.pow(rows, 3))
@@ -147,17 +148,17 @@ def threeDtorus(num_workers) do
     end
 end
 
-def honeycomb(num_workers) do                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+def honeycomb(num_workers) do
     range = 1..num_workers
     cond do
         num_workers < 6 -> line(num_workers)
         num_workers >5 and num_workers <19 -> circle(num_workers)
-        num_workers >18 -> 
+        num_workers >18 ->
             q = div num_workers,6
             r = rem num_workers,6
             cond do
                 r==0 -> createHeaxgons(q*6,r)
-                rem(q,2) ==0 -> 
+                rem(q,2) ==0 ->
                     q = q-1
                     r = r+6
                     addR(q, r, createHeaxgons(q*6,r))
