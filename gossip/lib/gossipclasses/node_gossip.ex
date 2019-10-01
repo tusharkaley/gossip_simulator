@@ -2,7 +2,7 @@ defmodule Gossipclasses.NodeGossip do
 	use GenServer
 	require Logger
 
-	@rumour_threshold 5
+	@rumour_threshold 10
 
 	def start_link(neighbours) do
 		GenServer.start_link(__MODULE__, neighbours)
@@ -90,7 +90,6 @@ defmodule Gossipclasses.NodeGossip do
 
 	def handle_cast({:start_rumour, message}, node_state) do
 
-    Logger.debug("Start rumour start")
     neighbours = Map.get(node_state, "neighbours")
     target = Enum.random(neighbours)
     # This is when the ets table is used
@@ -98,7 +97,6 @@ defmodule Gossipclasses.NodeGossip do
     id_pid = Map.get(node_state, "id_pid")
     target = Map.get(id_pid, target)
     Gossipclasses.NodeGossip.receive_message(target, message, self())
-    Logger.debug("Start rumour end")
 		{:noreply, node_state}
  	end
 

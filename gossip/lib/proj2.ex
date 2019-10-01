@@ -6,7 +6,7 @@ defmodule Proj2.CLI do
 	# Add children to the supervisor
 
   num_nodes = Kernel.trunc(Gossipclasses.Utils.update_num_nodes(topology, num_nodes))
-  IO.puts ("Numnodes is #{num_nodes}")
+  # IO.puts ("Numnodes is #{num_nodes}")
   # Get the adjancency list based on the topology that was passed in the arguments
   adj_list = cond do
     topology == "line" -> Gossipclasses.Topologies.line(num_nodes)
@@ -24,12 +24,11 @@ defmodule Proj2.CLI do
 
 
 
-  IO.puts "Printing adj list"
-  IO.inspect("Time start #{inspect Time.utc_now()}")
+  # IO.inspect("Time start #{inspect Time.utc_now()}")
   # IO.inspect(adj_list)
     # # Set neighbours of all the nodes based on the adjacency list we just got
   _id_pid = Gossipclasses.Utils.set_all_neighbours(algorithm, num_nodes)
-  IO.inspect("Time end #{inspect Time.utc_now()}")
+  # IO.inspect("Time end #{inspect Time.utc_now()}")
     # # Once we have all the nodes set up we update the state of the Node_Tracker
     # Gossipclasses.NodeTracker.add_all_to_state()
 

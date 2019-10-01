@@ -38,7 +38,7 @@ defmodule Gossipclasses.Utils do
 		else
 				# {:ok, child} = DynamicSupervisor.start_child(Gossipclasses.Supervisor, Gossipclasses.Utils.get_child_spec(Gossipclasses.NodeGossip, x))
 				{:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {child_class, :start_link, [x, neighbours]}, :restart => :transient,:type => :worker})
-				  IO.inspect(child)
+				  # IO.inspect(child)
 				  if (x == 1) do
 					  Gossipclasses.Utils.set_start_child(child)
 				  end
@@ -81,7 +81,7 @@ defmodule Gossipclasses.Utils do
 		[head| _tail] = tup
 		starter_pid = elem(head, 1)
 
-		Logger.debug("Inside getsetgo")
+		# Logger.debug("Inside getsetgo")
 		cond do
 			algorithm == "gossip" -> Gossipclasses.NodeGossip.start_rumour(starter_pid, message)
 			algorithm == "push-sum" -> Gossipclasses.NodePushSum.receive_message(starter_pid, s, w)
@@ -118,9 +118,9 @@ Function to set all the neighbours of
             algorithm == "gossip" -> Gossipclasses.NodeGossip.update_id_pid(val, id_pid, pid_id)
             algorithm == "push-sum" -> Gossipclasses.NodePushSum.update_id_pid(val, id_pid)
           end
-          if rem(key,500) == 0 do
-            IO.puts("Processed #{key}")
-          end
+          # if rem(key,500) == 0 do
+            # IO.puts("Processed #{key}")
+          # end
         end
     end
 	# IO.inspect(id_pid)
@@ -132,7 +132,7 @@ Function to set all the neighbours of
 		# start_time = Gossipclasses.NodeTracker.get_start_time()
 		time_now = Time.utc_now()
 		time_diff = Time.diff(time_now, start_time, :millisecond)
-    	Logger.debug("The time difference is #{time_diff}")
+    IO.puts("Convergence Time #{time_diff}")
  	end
 
   def updated_num(topology, num_nodes)  do
