@@ -16,7 +16,7 @@ defmodule Gossipclasses.NodePushSum do
 		# Logger.log(:debug, "Update neighbours: My PID is #{inspect pid} and my node state is #{inspect neighbours}" )
 			GenServer.cast(pid, {:add_neighbours, neighbours})
 	end
-	
+
 	def start_pushing(pid, message) do
 		GenServer.call(pid, {:start_pushing, message}, :infinity)
 	end
@@ -37,10 +37,10 @@ defmodule Gossipclasses.NodePushSum do
 		ratioChange= Map.get node_state,"ratioChange"
 
 		ratioChange =
-		cond do 
+		cond do
 		  (diff < :math.pow(10, -10) && ratioChange == 2) ->
 		  		Logger.log(:warn, "PID: #{inspect self()} node state: #{inspect node_state} RATIO REACHED" )
-		  		Gossipclasses.NodeTracker.mark_as_done(self())
+		  		Gossipclasses.NodeTracker.mark_as_done()
 		  		ratioChange
 		  diff < :math.pow(10, -10)-> ratioChange + 1
 		  true -> 0
@@ -50,7 +50,7 @@ defmodule Gossipclasses.NodePushSum do
 			target = Enum.random(neighbours)
 			Logger.log(:debug, "PID: #{inspect self()} node state: #{inspect node_state} sending values to #{inspect target}" )
 			Gossipclasses.NodePushSum.receive_message(target, new_s, new_w)
-	
+
 		node_state= Map.put(node_state, "s", new_s)
 		node_state= Map.put(node_state, "w", new_w)
 		node_state= Map.put(node_state, "ratioChange", ratioChange)
