@@ -13,13 +13,6 @@ defmodule Gossipclasses.NodeTracker do
 		GenServer.cast(:tracker, {:mark_done})
 	end
 
-	@doc """
-		Function to get the start time of the protocol.
-	"""
-	def get_start_time() do
-		GenServer.call(:tracker, {:tracker_state})
-	end
-
 	@impl true
 	def init(initial_values) do
 		{:ok, script_pid} = Enum.fetch(initial_values, 0)
@@ -41,7 +34,11 @@ defmodule Gossipclasses.NodeTracker do
 		node_store = Map.put(node_store, "done_count", node_store["done_count"]+1)
 		done_count = Map.get(node_store, "done_count")
 		num_nodes = Map.get(node_store, "num_nodes")
-		done_percentage = (done_count/num_nodes) * 100
+    done_percentage = (done_count/num_nodes) * 100
+    IO.puts("Done with #{done_count} nodes")
+    if rem(done_count, 500) == 0 do
+      IO.puts("Done with #{done_count} nodes")
+    end
 		# IO.puts("Done count is #{done_count}")
 		if done_percentage > 90.0 do
 			# Logger.log(:warn, "We are about to shut down #{inspect node_store}")
@@ -51,14 +48,6 @@ defmodule Gossipclasses.NodeTracker do
 		end
 		# Logger.log(:debug, "node state: #{inspect node_store}" )
 		{:noreply, node_store}
-	end
-	@doc """
-	Get the start time of when we triggered the algo
-	"""
-	@impl true
-	def handle_call({:tracker_state}, _from, node_store) do
-		# Logger.log(:debug, "PID_IN_TRACKER_STATE: #{inspect self()} node state: #{inspect node_store}" )
-		{:reply, Map.get(node_store, "time_start"), Map.get(node_store, "time_start")}
 	end
 
 end
