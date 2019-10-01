@@ -21,10 +21,9 @@ defmodule Proj2.CLI do
   end
   # num_nodes_empty = Enum.count(adj_list, fn (key) -> length(Map.get(adj_list, key)) > 0  end)
   # Enum.reduce([1, 2, 3], 0, fn x, acc -> x + acc end)
-  IO.inspect(adj_list)
+  # IO.inspect(adj_list)
   num_nodes_friendly = Enum.reduce(adj_list, 0, fn x, acc ->
-    IO.inspect(x)
-    IO.inspect(acc)
+
     if length(elem(x, 1)) > 0 do
       1 + acc
     else
@@ -43,7 +42,7 @@ defmodule Proj2.CLI do
   # IO.inspect("Time start #{inspect Time.utc_now()}")
   # IO.inspect(adj_list)
     # # Set neighbours of all the nodes based on the adjacency list we just got
-  _id_pid = Gossipclasses.Utils.set_all_neighbours(algorithm, num_nodes)
+  _id_pid = Gossipclasses.Utils.set_all_neighbours(algorithm, num_nodes, adj_list)
   # IO.inspect("Time end #{inspect Time.utc_now()}")
     # # Once we have all the nodes set up we update the state of the Node_Tracker
     # Gossipclasses.NodeTracker.add_all_to_state()

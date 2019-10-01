@@ -19,8 +19,8 @@ end
 def fullNetwork(num_workers) do
     range = 1..num_workers
     map = Enum.reduce range, %{}, fn x, acc->
-        neighbors =[]
-        # neighbors = List.delete neighbors,x
+        neighbors =Enum.to_list 1..num_workers
+        neighbors = List.delete neighbors,x
         Map.put(acc, x, neighbors)
     end
     map
