@@ -13,10 +13,10 @@ defmodule Proj2.CLI do
   adj_list = cond do
     topology == "line" -> Gossipclasses.Topologies.line(num_nodes)
     topology == "full" -> Gossipclasses.Topologies.fullNetwork(num_nodes)
-    topology == "3dtorus" -> Gossipclasses.Topologies.threeDtorus(num_nodes)
-    topology == "2dgrid" -> Gossipclasses.Topologies.random2D(num_nodes)
+    topology == "3Dtorus" -> Gossipclasses.Topologies.threeDtorus(num_nodes)
+    topology == "rand2D" -> Gossipclasses.Topologies.random2D(num_nodes)
     topology == "honeycomb" -> Gossipclasses.Topologies.honeycomb(num_nodes)
-    topology == "honeycombRandom" -> Gossipclasses.Topologies.randHoneyComb(num_nodes)
+    topology == "randhoneycomb" -> Gossipclasses.Topologies.randHoneyComb(num_nodes)
   end
 
   num_nodes_friendly = Enum.reduce(adj_list, 0, fn x, acc ->
