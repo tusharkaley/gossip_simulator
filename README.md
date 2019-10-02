@@ -1,4 +1,4 @@
-#These are the building blocks of this project:
+# These are the building blocks of this project:
 
 - Gossipclasses.Supervisor: Supervisor
 - Gossipclasses.NodeGossip: Genserver module which handles the case where the algorithm chosen is GOSSIP
