@@ -2,14 +2,13 @@ defmodule Gossipclasses.NodePushSum do
 	use GenServer
 	require Logger
 
-	def start_link(index,neighbours) do
-		GenServer.start_link(__MODULE__, [index,neighbours])
+	def start_link(index) do
+		GenServer.start_link(__MODULE__, [index])
 	end
 
 	def init(state) do
 		{:ok,i} = Enum.fetch state,0
-		{:ok,neighbours} = Enum.fetch state,1
-		node_state = %{"s" =>i , "w" => 1, "ratioChange" => 0, "neighbours" => neighbours, "id_pid" => nil}
+		node_state = %{"s" =>i , "w" => 1, "ratioChange" => 0, "neighbours" => nil, "id_pid" => nil, "id" => i}
 		{:ok, node_state}
 	end
 
@@ -48,10 +47,14 @@ defmodule Gossipclasses.NodePushSum do
 		  diff < :math.pow(10, -10)-> ratioChange + 1
 		  true -> 0
 		  end
-			neighbours = Map.get(node_state, "neighbours")
+      # neighbours = Map.get(node_state, "neighbours")
+      [head| _tail] = :ets.lookup(:adj_list_table, "adj_list")
+      adj_list = elem(head, 1)
+      neighbours = Map.get(adj_list, Map.get(node_state, "id") )
 			# Pick a random neighbour from the neighbour list
 			target = Enum.random(neighbours)
-			id_pid = Map.get(node_state, "id_pid")
+			[head| _tail] = :ets.lookup(:id_pid_mapping, "id_pid")
+      id_pid = elem(head, 1)
 			target = Map.get(id_pid, target)
 			# Logger.log(:debug, "PID: #{inspect self()} node state: #{inspect node_state} sending values to #{inspect target}" )
 			Gossipclasses.NodePushSum.receive_message(target, new_s, new_w)
@@ -85,9 +88,14 @@ defmodule Gossipclasses.NodePushSum do
 	end
 
 	def handle_cast(:start_pushing, node_state) do
-		neighbours = Map.get(node_state, "neighbours")
+    # neighbours = Map.get(node_state, "neighbours")
+    [head| _tail] = :ets.lookup(:adj_list_table, "adj_list")
+    adj_list = elem(head, 1)
+    neighbours = Map.get(adj_list, Map.get(node_state, "id") )
 		target = Enum.random(neighbours)
-		id_pid = Map.get(node_state, "id_pid")
+    # id_pid = Map.get(node_state, "id_pid")
+    [head| _tail] = :ets.lookup(:id_pid_mapping, "id_pid")
+    id_pid = elem(head, 1)
 		target = Map.get(id_pid, target)
 		s= Map.get(node_state, "s")
 		w= Map.get(node_state, "w")
