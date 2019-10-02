@@ -26,11 +26,13 @@ be found at [https://hexdocs.pm/gossip](https://hexdocs.pm/gossip).
 Navigate to the gossip_simulator/gossip  
 
 Run   
-mix escript.build  
+`mix escript.build`
 
-For Mac: ./proj2 <num nodes> <topology> <algorithm>
+For Mac:  
+`./proj2 <num nodes> <topology> <algorithm>`
 
-For Windows: escript proj2 <num nodes> <topology> <algorithm>
+For Windows:   
+`escript proj2 <num nodes> <topology> <algorithm>`
 
 Possible values for topology:
 - line  
@@ -45,7 +47,7 @@ Possible values for algorithm:
 - push-sum  
 
 Sample run:  
-
+```
 ./proj2 100 line gossip  
 ./proj2 100 full gossip  
 ./proj2 100 3Dtorus gossip  
@@ -60,8 +62,9 @@ Sample run:
 ./proj2 100 rand2D push-sum  
 ./proj2 100 honeycomb push-sum  
 ./proj2 100 randhoneycomb push-sum  
-
+```
 Sample output:  
+```
 ./proj2 1000 randhoneycomb push-sum  
 
 Getting the Adjacency list  
@@ -72,6 +75,6 @@ Done with 300 nodes
 Done with 600 nodes  
 Done with 900 nodes  
 Convergence Time 1048  
-
+```
 Please note:  
 We print a log for every 200 nodes being marked as done.  
