@@ -36,7 +36,7 @@ defmodule Gossipclasses.NodeTracker do
 		num_nodes = Map.get(node_store, "num_nodes")
     done_percentage = (done_count/num_nodes) * 100
     # IO.puts("Done with #{done_count} nodes")
-    if rem(done_count, 300) == 0 do
+    if rem(done_count, 200) == 0 do
       IO.puts("Done with #{done_count} nodes")
     end
 		# IO.puts("Done count is #{done_count}")
