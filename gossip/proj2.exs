@@ -35,7 +35,7 @@ try do
 					topology == "line" -> Gossipclasses.Topologies.line(num_nodes)
 					topology == "full" -> Gossipclasses.Topologies.fullNetwork(num_nodes)
 					topology == "3Dtorus" -> Gossipclasses.Topologies.threeDtorus(num_nodes)
-					topology == "2dgrid" -> Gossipclasses.Topologies.random2D(num_nodes)
+					topology == "rand2D" -> Gossipclasses.Topologies.random2D(num_nodes)
 					topology == "honeycomb" -> Gossipclasses.Topologies.honeycomb(num_nodes)
 					topology == "randhoneycomb" -> Gossipclasses.Topologies.randHoneyComb(num_nodes)
 				end
