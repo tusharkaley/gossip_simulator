@@ -1,0 +1,421 @@
+#!/bin/bash
+echo "line gossip 100" 
+./proj2 100 line gossip
+
+echo "-----------------------------------------------------------"
+echo "line gossip 200" 
+./proj2 200 line gossip
+
+echo "-----------------------------------------------------------"
+echo "line gossip 300" 
+./proj2 300 line gossip
+
+echo "-----------------------------------------------------------"
+echo "line gossip 400" 
+./proj2 400 line gossip
+
+echo "-----------------------------------------------------------"
+echo "line gossip 500"
+./proj2 500 line gossip
+
+# echo "-----------------------------------------------------------"
+# echo "line gossip 1000"
+
+# ./proj2 1000 line gossip
+# echo "-----------------------------------------------------------"
+
+# echo "line gossip 1500"
+
+# ./proj2 1500 line gossip
+# echo "----------------------------------------------------------"
+# echo "line gossip 2000"
+
+# ./proj2 2000 line gossip
+# echo "-----------------------------------------------------------"
+
+# echo "line gossip 3000"
+
+# ./proj2 3000 line gossip
+# echo "-----------------------------------------------------------"
+
+
+echo "full gossip 100" 
+./proj2 100 full gossip
+
+echo "-----------------------------------------------------------"
+echo "full gossip 200" 
+./proj2 200 full gossip
+
+echo "-----------------------------------------------------------"
+echo "full gossip 300" 
+./proj2 300 full gossip
+
+# echo "-----------------------------------------------------------"
+# echo "full gossip 400" 
+# ./proj2 400 full gossip
+
+# echo "-----------------------------------------------------------"
+# echo "full gossip 500"
+# ./proj2 500 full gossip
+
+
+echo "3Dtorus gossip 100" 
+./proj2 100 3Dtorus gossip
+
+echo "-----------------------------------------------------------"
+echo "3Dtorus gossip 200" 
+./proj2 200 3Dtorus gossip
+
+echo "-----------------------------------------------------------"
+echo "3Dtorus gossip 300" 
+./proj2 300 3Dtorus gossip
+
+echo "-----------------------------------------------------------"
+echo "3Dtorus gossip 400" 
+./proj2 400 3Dtorus gossip
+
+echo "-----------------------------------------------------------"
+echo "3Dtorus gossip 500"
+./proj2 500 3Dtorus gossip
+
+echo "-----------------------------------------------------------"
+echo "3Dtorus gossip 1000"
+
+# ./proj2 1000 3Dtorus gossip
+# echo "-----------------------------------------------------------"
+
+# echo "3Dtorus gossip 1500"
+
+# ./proj2 1500 3Dtorus gossip
+# echo "----------------------------------------------------------"
+# echo "3Dtorus gossip 2000"
+
+# ./proj2 2000 3Dtorus gossip
+# echo "-----------------------------------------------------------"
+
+# echo "3Dtorus gossip 3000"
+
+# ./proj2 3000 3Dtorus gossip
+# echo "-----------------------------------------------------------"
+
+
+echo "rand2D gossip 100" 
+./proj2 100 rand2D gossip
+
+echo "-----------------------------------------------------------"
+echo "rand2D gossip 200" 
+./proj2 200 rand2D gossip
+
+echo "-----------------------------------------------------------"
+echo "rand2D gossip 300" 
+./proj2 300 rand2D gossip
+
+echo "-----------------------------------------------------------"
+echo "rand2D gossip 400" 
+./proj2 400 rand2D gossip
+
+# echo "-----------------------------------------------------------"
+# echo "rand2D gossip 500"
+# ./proj2 500 rand2D gossip
+
+# echo "-----------------------------------------------------------"
+# echo "rand2D gossip 1000"
+
+# ./proj2 1000 rand2D gossip
+# echo "-----------------------------------------------------------"
+
+# echo "rand2D gossip 1500"
+
+# ./proj2 1500 rand2D gossip
+# echo "----------------------------------------------------------"
+
+
+echo "honeycomb gossip 100" 
+./proj2 100 honeycomb gossip
+
+echo "-----------------------------------------------------------"
+echo "honeycomb gossip 200" 
+./proj2 200 honeycomb gossip
+
+echo "-----------------------------------------------------------"
+echo "honeycomb gossip 300" 
+./proj2 300 honeycomb gossip
+
+echo "-----------------------------------------------------------"
+echo "honeycomb gossip 400" 
+./proj2 400 honeycomb gossip
+
+echo "-----------------------------------------------------------"
+echo "honeycomb gossip 500"
+./proj2 500 honeycomb gossip
+
+echo "-----------------------------------------------------------"
+echo "honeycomb gossip 1000"
+
+./proj2 1000 honeycomb gossip
+echo "-----------------------------------------------------------"
+
+echo "honeycomb gossip 1500"
+
+./proj2 1500 honeycomb gossip
+echo "----------------------------------------------------------"
+
+# echo "honeycomb gossip 2000"
+# ./proj2 2000 honeycomb gossip
+# echo "-----------------------------------------------------------"
+
+# echo "honeycomb gossip 3000"
+
+# ./proj2 3000 honeycomb gossip
+# echo "-----------------------------------------------------------"
+
+
+echo "randhoneycomb gossip 100" 
+./proj2 100 randhoneycomb gossip
+
+echo "-----------------------------------------------------------"
+echo "randhoneycomb gossip 200" 
+./proj2 200 randhoneycomb gossip
+
+echo "-----------------------------------------------------------"
+echo "randhoneycomb gossip 300" 
+./proj2 300 randhoneycomb gossip
+
+echo "-----------------------------------------------------------"
+echo "randhoneycomb gossip 400" 
+./proj2 400 randhoneycomb gossip
+
+echo "-----------------------------------------------------------"
+echo "randhoneycomb gossip 500"
+./proj2 500 randhoneycomb gossip
+
+echo "-----------------------------------------------------------"
+echo "randhoneycomb gossip 1000"
+
+./proj2 1000 randhoneycomb gossip
+echo "-----------------------------------------------------------"
+
+echo "randhoneycomb gossip 1500"
+
+./proj2 1500 randhoneycomb gossip
+echo "----------------------------------------------------------"
+# echo "randhoneycomb gossip 2000"
+
+# ./proj2 2000 randhoneycomb gossip
+# echo "-----------------------------------------------------------"
+
+# echo "randhoneycomb gossip 3000"
+
+# ./proj2 3000 randhoneycomb gossip
+# echo "-----------------------------------------------------------"
+
+
+echo "line push-sum 100" 
+./proj2 100 line push-sum
+
+echo "-----------------------------------------------------------"
+echo "line push-sum 200" 
+./proj2 200 line push-sum
+
+echo "-----------------------------------------------------------"
+echo "line push-sum 300" 
+./proj2 300 line push-sum
+
+echo "-----------------------------------------------------------"
+echo "line push-sum 400" 
+./proj2 400 line push-sum
+
+echo "-----------------------------------------------------------"
+echo "line push-sum 500"
+./proj2 500 line push-sum
+
+echo "-----------------------------------------------------------"
+echo "line push-sum 1000"
+
+# ./proj2 1000 line push-sum
+# echo "-----------------------------------------------------------"
+
+# echo "line push-sum 1500"
+
+# ./proj2 1500 line push-sum
+# echo "----------------------------------------------------------"
+# echo "line push-sum 2000"
+
+# ./proj2 2000 line push-sum
+# echo "-----------------------------------------------------------"
+
+# echo "line push-sum 3000"
+
+# ./proj2 3000 line push-sum
+# echo "-----------------------------------------------------------"
+
+
+echo "full push-sum 100" 
+./proj2 100 full push-sum
+
+echo "-----------------------------------------------------------"
+echo "full push-sum 200" 
+./proj2 200 full push-sum
+
+echo "-----------------------------------------------------------"
+echo "full push-sum 300" 
+./proj2 300 full push-sum
+
+echo "-----------------------------------------------------------"
+echo "full push-sum 400" 
+./proj2 400 full push-sum
+
+# echo "-----------------------------------------------------------"
+# echo "full push-sum 500"
+# ./proj2 500 full push-sum
+
+
+echo "3Dtorus push-sum 100" 
+./proj2 100 3Dtorus push-sum
+
+echo "-----------------------------------------------------------"
+echo "3Dtorus push-sum 200" 
+./proj2 200 3Dtorus push-sum
+
+echo "-----------------------------------------------------------"
+echo "3Dtorus push-sum 300" 
+./proj2 300 3Dtorus push-sum
+
+echo "-----------------------------------------------------------"
+echo "3Dtorus push-sum 400" 
+./proj2 400 3Dtorus push-sum
+
+echo "-----------------------------------------------------------"
+echo "3Dtorus push-sum 500"
+./proj2 500 3Dtorus push-sum
+
+echo "-----------------------------------------------------------"
+echo "3Dtorus push-sum 1000"
+
+./proj2 1000 3Dtorus push-sum
+echo "-----------------------------------------------------------"
+
+echo "3Dtorus push-sum 1500"
+
+./proj2 1500 3Dtorus push-sum
+echo "----------------------------------------------------------"
+# echo "3Dtorus push-sum 2000"
+
+# ./proj2 2000 3Dtorus push-sum
+# echo "-----------------------------------------------------------"
+
+# echo "3Dtorus push-sum 3000"
+
+# ./proj2 3000 3Dtorus push-sum
+# echo "-----------------------------------------------------------"
+
+
+echo "rand2D push-sum 100" 
+./proj2 100 rand2D push-sum
+
+echo "-----------------------------------------------------------"
+echo "rand2D push-sum 200" 
+./proj2 200 rand2D push-sum
+
+echo "-----------------------------------------------------------"
+echo "rand2D push-sum 300" 
+./proj2 300 rand2D push-sum
+
+echo "-----------------------------------------------------------"
+echo "rand2D push-sum 400" 
+./proj2 400 rand2D push-sum
+
+echo "-----------------------------------------------------------"
+echo "rand2D push-sum 500"
+./proj2 500 rand2D push-sum
+
+# echo "-----------------------------------------------------------"
+# echo "rand2D push-sum 1000"
+
+# ./proj2 1000 rand2D push-sum
+# echo "-----------------------------------------------------------"
+
+# echo "rand2D push-sum 1500"
+
+# ./proj2 1500 rand2D push-sum
+# echo "----------------------------------------------------------"
+
+
+echo "honeycomb push-sum 100" 
+./proj2 100 honeycomb push-sum
+
+echo "-----------------------------------------------------------"
+echo "honeycomb push-sum 200" 
+./proj2 200 honeycomb push-sum
+
+echo "-----------------------------------------------------------"
+echo "honeycomb push-sum 300" 
+./proj2 300 honeycomb push-sum
+
+echo "-----------------------------------------------------------"
+echo "honeycomb push-sum 400" 
+./proj2 400 honeycomb push-sum
+
+echo "-----------------------------------------------------------"
+echo "honeycomb push-sum 500"
+./proj2 500 honeycomb push-sum
+
+echo "-----------------------------------------------------------"
+echo "honeycomb push-sum 1000"
+
+./proj2 1000 honeycomb push-sum
+echo "-----------------------------------------------------------"
+
+echo "honeycomb push-sum 1500"
+
+./proj2 1500 honeycomb push-sum
+echo "----------------------------------------------------------"
+
+# echo "honeycomb push-sum 2000"
+# ./proj2 2000 honeycomb push-sum
+# echo "-----------------------------------------------------------"
+
+# echo "honeycomb push-sum 3000"
+
+# ./proj2 3000 honeycomb push-sum
+# echo "-----------------------------------------------------------"
+
+
+echo "randhoneycomb push-sum 100" 
+./proj2 100 randhoneycomb push-sum
+
+echo "-----------------------------------------------------------"
+echo "randhoneycomb push-sum 200" 
+./proj2 200 randhoneycomb push-sum
+
+echo "-----------------------------------------------------------"
+echo "randhoneycomb push-sum 300" 
+./proj2 300 randhoneycomb push-sum
+
+echo "-----------------------------------------------------------"
+echo "randhoneycomb push-sum 400" 
+./proj2 400 randhoneycomb push-sum
+
+echo "-----------------------------------------------------------"
+echo "randhoneycomb push-sum 500"
+./proj2 500 randhoneycomb push-sum
+
+echo "-----------------------------------------------------------"
+echo "randhoneycomb push-sum 1000"
+
+./proj2 1000 randhoneycomb push-sum
+echo "-----------------------------------------------------------"
+
+echo "randhoneycomb push-sum 1500"
+
+./proj2 1500 randhoneycomb push-sum
+echo "----------------------------------------------------------"
+# echo "randhoneycomb push-sum 2000"
+
+# ./proj2 2000 randhoneycomb push-sum
+# echo "-----------------------------------------------------------"
+
+# echo "randhoneycomb push-sum 3000"
+
+# ./proj2 3000 randhoneycomb push-sum
+# echo "-----------------------------------------------------------"
