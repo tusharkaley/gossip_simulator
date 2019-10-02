@@ -2,7 +2,7 @@ defmodule Gossipclasses.NodeGossip do
 	use GenServer
 	require Logger
 
-	@rumour_threshold 10
+	@rumour_threshold 5
 
 	def start_link(id) do
 		GenServer.start_link(__MODULE__, [id])
@@ -53,7 +53,7 @@ defmodule Gossipclasses.NodeGossip do
     if heard_count == 1 do
       schedule()
     end
-    IO.puts("Heard count is #{heard_count}")
+    # IO.puts("Heard count is #{heard_count}")
 		# We flag this actor as done in the Node tracker once it hears the message <runmour_threshold> number of times
 		if heard_count == @rumour_threshold do
 			# Logger.log(:warn, "PID: #{inspect self()} node state: #{inspect node_state} THRESHOLD REACHED" )
