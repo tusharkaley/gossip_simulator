@@ -1,37 +1,39 @@
 defmodule Proj2.CLI do
   def main(args) do
-    [num_nodes, topology, algorithm] = args
+
+    [num_nodes, file_name, algorithm, rachael_id] = args
     num_nodes = elem(Integer.parse(num_nodes),0)
-
+    rachael_id = elem(Integer.parse(rachael_id),0)
+    {:ok, neighbours} = File.read(file_name)
 	# Add children to the supervisor
-  setup_start = Time.utc_now()
-
-  num_nodes = Kernel.trunc(Gossipclasses.Utils.update_num_nodes(topology, num_nodes))
+    setup_start = Time.utc_now()
+    adj_list = Gossipclasses.Utils.get_adj_list_From_str(neighbours)
+  # num_nodes = Kernel.trunc(Gossipclasses.Utils.update_num_nodes(topology, num_nodes))
 
   # Get the adjancency list based on the topology that was passed in the arguments
   IO.puts("Getting the Adjacency list")
-  adj_list = cond do
-    topology == "line" -> Gossipclasses.Topologies.line(num_nodes)
-    topology == "full" -> Gossipclasses.Topologies.fullNetwork(num_nodes)
-    topology == "3Dtorus" -> Gossipclasses.Topologies.threeDtorus(num_nodes)
-    topology == "rand2D" -> Gossipclasses.Topologies.random2D(num_nodes)
-    topology == "honeycomb" -> Gossipclasses.Topologies.honeycomb(num_nodes)
-    topology == "randhoneycomb" -> Gossipclasses.Topologies.randHoneyComb(num_nodes)
-  end
+  # adj_list = cond do
+  #   topology == "line" -> Gossipclasses.Topologies.line(num_nodes)
+  #   topology == "full" -> Gossipclasses.Topologies.fullNetwork(num_nodes)
+  #   topology == "3Dtorus" -> Gossipclasses.Topologies.threeDtorus(num_nodes)
+  #   topology == "rand2D" -> Gossipclasses.Topologies.random2D(num_nodes)
+  #   topology == "honeycomb" -> Gossipclasses.Topologies.honeycomb(num_nodes)
+  #   topology == "randhoneycomb" -> Gossipclasses.Topologies.randHoneyComb(num_nodes)
+  # end
 
-  num_nodes_friendly = Enum.reduce(adj_list, 0, fn x, acc ->
+  # num_nodes_friendly = Enum.reduce(adj_list, 0, fn x, acc ->
 
-    if length(elem(x, 1)) > 0 do
-      1 + acc
-    else
-      acc
-    end
-  end)
+  #   if length(elem(x, 1)) > 0 do
+  #     1 + acc
+  #   else
+  #     acc
+  #   end
+  # end)
   # IO.puts("Num_nodes_non_empty #{num_nodes_friendly}")
   IO.puts("Adding children to the Supervisor")
   cond do
-    algorithm == "gossip" -> Gossipclasses.Utils.add_children(Gossipclasses.NodeGossip, num_nodes,algorithm,topology, adj_list,self(), num_nodes_friendly)
-    algorithm == "push-sum" -> Gossipclasses.Utils.add_children(Gossipclasses.NodePushSum, num_nodes,algorithm,topology, adj_list,self(), num_nodes_friendly)
+    algorithm == "gossip" -> Gossipclasses.Utils.add_children(Gossipclasses.NodeGossip, num_nodes, algorithm, adj_list, self(), rachael_id)
+    algorithm == "push-sum" -> IO.puts "Tadaaaaa"#Gossipclasses.Utils.add_children(Gossipclasses.NodePushSum, num_nodes,algorithm,topology, adj_list,self(), num_nodes_friendly)
   end
 
 

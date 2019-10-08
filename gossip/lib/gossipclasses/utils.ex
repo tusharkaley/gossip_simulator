@@ -19,7 +19,7 @@ defmodule Gossipclasses.Utils do
 	@doc """
 		Function to get the child Spec for the workers
 	"""
-	def add_children(child_class, num_nodes,algorithm, _topology, _adj_list,script_pid, num_nodes_friendly) do
+	def add_children(child_class, num_nodes,algorithm,script_pid, start_child_id) do
 		Enum.each 1..num_nodes, fn(x) ->
         # {:ok, child} = DynamicSupervisor.start_child(Gossipclasses.Supervisor, Gossipclasses.Utils.get_child_spec(Gossipclasses.NodeGossip, x))
         # neighbours = if topology == "full" do
@@ -32,7 +32,7 @@ defmodule Gossipclasses.Utils do
       if algorithm == "gossip" do
           {:ok, child} = Supervisor.start_child(Gossipclasses.Supervisor, %{:id => x, :start => {child_class, :start_link, [x]}, :restart => :transient,:type => :worker})
 
-            if (x == 1) do
+            if (x == start_child_id) do
               Gossipclasses.Utils.set_start_child(child)
             end
       else
